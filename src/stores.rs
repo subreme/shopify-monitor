@@ -28,7 +28,7 @@ pub fn get() -> Vec<Store> {
             // This match block should include all the images saved in
             // the repository's logo folder.
             match site.logo.to_lowercase().chars().filter(|c| !c.is_whitespace()).collect::<String>().as_str() {
-                "shopify" => "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/shopify.png",
+                "shopify" => "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/shopify.jpg",
 
                 // These sites should be listed alphabetically.
                 "afew" => "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/afew.jpg",
@@ -55,7 +55,7 @@ pub fn get() -> Vec<Store> {
                     warning!("Invalid image for `{}`: `{}`!", site.name, site.logo);
                     default!("Using Shopify's logo instead...");
 
-                    "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/shopify.png"
+                    "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/shopify.jpg"
                 }
             }.into()
         };
