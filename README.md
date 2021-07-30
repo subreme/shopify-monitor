@@ -553,6 +553,29 @@ The higher up on the list the "context" is, the higher the priority of
 its settings, as their scope, or the number of `events` they apply to,
 is narrower.
 
+When a field's value isn't specified, the value of the same field at
+the "next level", going down the list above, is also checked. If it is
+given a value of `null`, instead, which can be detected thanks to the
+custom `Alt` type defined in [`alternative.rs`](src/alternative.rs), the
+default value is used. This also applies for the settings object as a
+whole, which can be written as `"settings": null` to the same result as
+the following snippet:
+
+```json
+"settings": {
+  "username": null,
+  "avatar": null,
+  "color": null,
+  "sizes": null,
+  "thumbnail": null,
+  "image": null,
+  "footer_text": null,
+  "footer_image": null,
+  "timestamp": null,
+  "keywords": null
+}
+```
+
 #### Objects
 
 The program allows you to use objects as a replacement for any array in
