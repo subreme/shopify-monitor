@@ -1,0 +1,613 @@
+{
+  "sites": [
+    {
+      "name": "AFEW",
+      "url": "https://en.afew-store.com",
+      "logo": "afew",
+      "delay": 5000
+    },
+    {
+      "name": "asphaltgold",
+      "url": "https://www.asphaltgold.com",
+      "logo": "asphaltgold",
+      "delay": 5000
+    },
+    {
+      "name": "atmos",
+      "url": "https://www.atmosusa.com",
+      "logo": "atmos",
+      "delay": 5000
+    },
+    {
+      "name": "Bodega",
+      "url": "https://bdgastore.com",
+      "logo": "bodega",
+      "delay": 5000
+    },
+    {
+      "name": "Concepts",
+      "url": "https://cncpts.com",
+      "logo": "concepts",
+      "delay": 5000
+    },
+    {
+      "name": "Extra Butter",
+      "url": "http://extrabutterny.com",
+      "logo": "extrabutter",
+      "delay": 5000
+    },
+    {
+      "name": "HANON (Disabled)",
+      "url": "https://www.hanon-shop.com",
+      "logo": "hanon",
+      "delay": 5000
+    },
+    {
+      "name": "Jimmy Jazz",
+      "url": "https://www.jimmyjazz.com",
+      "logo": "jimmyjazz",
+      "delay": 5000
+    },
+    {
+      "name": "Kith",
+      "url": "https://kith.com",
+      "logo": "kith",
+      "delay": 5000
+    },
+    {
+      "name": "Notre",
+      "url": "https://www.notre-shop.com",
+      "logo": "notre",
+      "delay": 5000
+    },
+    {
+      "name": "Packer",
+      "url": "https://packershoes.com",
+      "logo": "packer",
+      "delay": 5000
+    },
+    {
+      "name": "Shoe Palace",
+      "url": "https://www.shoepalace.com",
+      "logo": "shoepalace",
+      "delay": 5000
+    },
+    {
+      "name": "Sneaker Politics",
+      "url": "https://sneakerpolitics.com",
+      "logo": "sneakerpolitics",
+      "delay": 5000
+    },
+    {
+      "name": "Travis Scott",
+      "url": "https://shop.travisscott.com",
+      "logo": "travisscott",
+      "delay": 5000
+    },
+    {
+      "name": "UNDEFEATED",
+      "url": "https://undefeated.com",
+      "logo": "undefeated",
+      "delay": 5000
+    },
+    {
+      "name": "West NYC",
+      "url": "https://www.westnyc.com",
+      "logo": "westnyc",
+      "delay": 5000
+    }
+  ],
+  "servers": [
+    {
+      "name": "My Server",
+      "settings": {
+        "username": "Shopify Monitor",
+        "avatar": "https://avatars.githubusercontent.com/u/71085002?v=4"
+      },
+      "channels": [
+        {
+          "name": "#minimalist",
+          "url": "https://discord.com/api/webhooks/123456789012345678/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+          "settings": {
+            "image": true
+          },
+          "sites": [
+            {
+              "name": "AFEW",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "asphaltgold",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "atmos",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Bodega",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Concepts",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Hanon",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Extra Butter",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Jimmy Jazz",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Kith",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Notre",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Packer",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Shoe Palace",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Sneaker Politics",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "Travis Scott",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "UNDEFEATED",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            },
+            {
+              "name": "West NYC",
+              "events": [
+                {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "#normal",
+          "url": "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+          "settings": {
+            "sizes": true,
+            "thumbnail": true,
+            "footer_text": "subreme/shopify-monitor",
+            "footer_image": "https://avatars.githubusercontent.com/u/71085002?v=4",
+            "timestamp": true
+          },
+          "sites": [
+            {
+              "name": "AFEW",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "asphaltgold",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "atmos",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Bodega",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Concepts",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Hanon",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Extra Butter",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Jimmy Jazz",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Kith",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Notre",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Packer",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Shoe Palace",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Sneaker Politics",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "Travis Scott",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "UNDEFEATED",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            },
+            {
+              "name": "West NYC",
+              "events": [
+                {
+                  "restock": true
+                },
+                {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

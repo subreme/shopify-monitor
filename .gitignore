@@ -1,0 +1,11 @@
+/assets/minimalist.svg
+/backups
+/target
+.cargo-ok
+config.example.json
+config.private.json
+error.json
+products.json
+message.json
+shopify-monitor.log
+test.txt

@@ -1,0 +1,562 @@
+{
+  "sites": {
+    "AFEW": {
+      "url": "https://en.afew-store.com",
+      "logo": "afew",
+      "delay": 5000
+    },
+    "asphaltgold": {
+      "url": "https://www.asphaltgold.com",
+      "logo": "asphaltgold",
+      "delay": 5000
+    },
+    "atmos": {
+      "url": "https://www.atmosusa.com",
+      "logo": "atmos",
+      "delay": 5000
+    },
+    "Bodega": {
+      "url": "https://bdgastore.com",
+      "logo": "bodega",
+      "delay": 5000
+    },
+    "Concepts": {
+      "url": "https://cncpts.com",
+      "logo": "concepts",
+      "delay": 5000
+    },
+    "Extra Butter": {
+      "url": "http://extrabutterny.com",
+      "logo": "extrabutter",
+      "delay": 5000
+    },
+    "HANON": {
+      "url": "https://www.hanon-shop.com",
+      "logo": "hanon",
+      "delay": 5000
+    },
+    "Jimmy Jazz": {
+      "url": "https://www.jimmyjazz.com",
+      "logo": "jimmyjazz",
+      "delay": 5000
+    },
+    "Kith": {
+      "url": "https://kith.com",
+      "logo": "kith",
+      "delay": 5000
+    },
+    "Notre": {
+      "url": "https://www.notre-shop.com",
+      "logo": "notre",
+      "delay": 5000
+    },
+    "Packer": {
+      "url": "https://packershoes.com",
+      "logo": "packer",
+      "delay": 5000
+    },
+    "Shoe Palace": {
+      "url": "https://www.shoepalace.com",
+      "logo": "shoepalace",
+      "delay": 5000
+    },
+    "Sneaker Politics": {
+      "url": "https://sneakerpolitics.com",
+      "logo": "sneakerpolitics",
+      "delay": 5000
+    },
+    "Travis Scott": {
+      "url": "https://shop.travisscott.com",
+      "logo": "travisscott",
+      "delay": 5000
+    },
+    "UNDEFEATED": {
+      "url": "https://undefeated.com",
+      "logo": "undefeated",
+      "delay": 5000
+    },
+    "West NYC": {
+      "url": "https://www.westnyc.com",
+      "logo": "westnyc",
+      "delay": 5000
+    }
+  },
+  "servers": {
+    "My Server": {
+      "settings": {
+        "username": "Shopify Monitor",
+        "avatar": "https://avatars.githubusercontent.com/u/71085002?v=4"
+      },
+      "channels": {
+        "#minimalist": {
+          "url": "https://discord.com/api/webhooks/123456789012345678/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+          "settings": {
+            "image": true
+          },
+          "sites": {
+            "AFEW": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "asphaltgold": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "atmos": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Bodega": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Concepts": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Hanon": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Extra Butter": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Jimmy Jazz": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Kith": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Notre": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Packer": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Shoe Palace": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Sneaker Politics": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "Travis Scott": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "UNDEFEATED": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            },
+            "West NYC": {
+              "events": {
+                "All Events (gray)": {
+                  "restock": true,
+                  "password_up": true,
+                  "password_down": true
+                }
+              }
+            }
+          }
+        },
+        "#normal": {
+          "url": "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+          "settings": {
+            "sizes": true,
+            "thumbnail": true,
+            "footer_text": "subreme/shopify-monitor",
+            "footer_image": "https://avatars.githubusercontent.com/u/71085002?v=4",
+            "timestamp": true
+          },
+          "sites": {
+            "AFEW": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "asphaltgold": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "atmos": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Bodega": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Concepts": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Hanon": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Extra Butter": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Jimmy Jazz": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Kith": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Notre": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Packer": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Shoe Palace": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Sneaker Politics": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "Travis Scott": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "UNDEFEATED": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            },
+            "West NYC": {
+              "events": {
+                "Restock (gray)": {
+                  "restock": true
+                },
+                "Password Up (red)": {
+                  "password_up": true,
+                  "settings": {
+                    "color": "#e74c3c"
+                  }
+                },
+                "Password Down (green)": {
+                  "password_down": true,
+                  "settings": {
+                    "color": "#2ecc71"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
