@@ -141,14 +141,15 @@ therefore it's important to understand how it works.
 Before we continue, iff you want to see *exactly* how these settings are
 defined, you can check [`config.rs`](src/config.rs), while if you want
 to know how they are dealt with "under the hood", you can check
-[`stores.rs`](src/stores.rs). Please note that Rust's design, combined
-with my inexperience both with the language and as a developer, can make
-for some rather confusing code. I did my best to include several
-comments explaining my reasoning and trying to help readers follow
-through, however if this is not enough, feel free to ask me any
-questions or to [open an
-issue](https://github.com/subreme/shopify-monitor/issues/new). Now back
-to the explanation.
+[`stores.rs`](src/stores.rs). [`config.txt`](config.txt), instead,
+contains a stylized version of the data the monitor converts the example
+config file to. Please note that Rust's design, combined with my
+inexperience both with the language and as a developer, can make for
+some rather confusing code. I did my best to include several comments
+explaining my reasoning and trying to help readers follow through,
+however if this is not enough, feel free to ask me any questions or to
+[open an issue](https://github.com/subreme/shopify-monitor/issues/new).
+Now back to the explanation.
 
 Let's start by looking at a complete Config Example:
 
@@ -408,7 +409,7 @@ As you can see, the object contains the following keys:
       when the store's password page is raised.
     - *`password_down`*: if this is enabled, a webhook will instead be
       sent out when the password page is removed.
-  
+
 `servers`'s many settings should allow for great customizability,
 suiting almost any monitor needs.
 
