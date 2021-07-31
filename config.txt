@@ -1,0 +1,2160 @@
+[
+    Store {
+        name: "Jimmy Jazz",
+        url: "https://www.jimmyjazz.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/jimmyjazz.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "West NYC",
+        url: "https://www.westnyc.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/westnyc.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Bodega",
+        url: "https://bdgastore.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/bodega.png",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Concepts",
+        url: "https://cncpts.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/concepts.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Packer",
+        url: "https://packershoes.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/packer.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "asphaltgold",
+        url: "https://www.asphaltgold.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/asphaltgold.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Shoe Palace",
+        url: "https://www.shoepalace.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/shoepalace.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Travis Scott",
+        url: "https://shop.travisscott.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/travisscott.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "AFEW",
+        url: "https://en.afew-store.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/afew.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Sneaker Politics",
+        url: "https://sneakerpolitics.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/sneakerpolitics.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Notre",
+        url: "https://www.notre-shop.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/notre.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Extra Butter",
+        url: "http://extrabutterny.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/extrabutter.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "Kith",
+        url: "https://kith.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/kith.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "UNDEFEATED",
+        url: "https://undefeated.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/undefeated.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+    Store {
+        name: "atmos",
+        url: "https://www.atmosusa.com",
+        logo: "https://raw.githubusercontent.com/subreme/shopify-monitor/main/logos/atmos.jpg",
+        delay: 5000,
+        restock: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_up: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        15158332,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+        password_down: [
+            Channel {
+                name: "#minimalist",
+                url: "https://discord.com/api/webhooks/123456789012345678/AbCdEfGhIjKlMnOpQrStUvWxYzAbCdEfGhIjKlMnOpQrStUvWxYz",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: None,
+                    sizes: false,
+                    thumbnail: false,
+                    image: false,
+                    footer_text: None,
+                    footer_image: None,
+                    timestamp: false,
+                },
+            },
+            Channel {
+                name: "#normal",
+                url: "https://discord.com/api/webhooks/246802468024680246/aBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZaBcDeFgHiJkLmNoPqRsTuVwXyZ",
+                settings: Settings {
+                    username: Some(
+                        "Shopify Monitor",
+                    ),
+                    avatar: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    color: Some(
+                        3066993,
+                    ),
+                    sizes: true,
+                    thumbnail: true,
+                    image: true,
+                    footer_text: Some(
+                        "subreme/shopify-monitor",
+                    ),
+                    footer_image: Some(
+                        "https://avatars.githubusercontent.com/u/71085002?v=4",
+                    ),
+                    timestamp: true,
+                },
+            },
+        ],
+    },
+]
