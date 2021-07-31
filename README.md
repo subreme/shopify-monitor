@@ -3,7 +3,7 @@
 [![Template](https://img.shields.io/badge/template-subreme%2Frust--template-orange)](https://github.com/subreme/rust-template/)
 [![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-green)](https://github.com/subreme/shopify-monitor/#license)
 [![Dependency
-Status](https://deps.rs/repo/github/subreme/rust-template/status.svg)](https://deps.rs/repo/github/subreme/rust-template)
+Status](https://deps.rs/repo/github/subreme/shopify-monitor/status.svg)](https://deps.rs/repo/github/subreme/shopify-monitor)
 [![Release](https://img.shields.io/github/v/release/subreme/shopify-monitor?color=blue&sort=semver)](https://github.com/subreme/shopify-monitor/releases/latest/)
 
 ## Introduction
