@@ -47,7 +47,7 @@ pub async fn run(stores: Vec<stores::Store>) {
                 let req = client.get(
                     // format!("{}/products.json?limit=100",
                     format!("{}/products.json",
-                    &store.url.to_owned().trim_end_matches('/')
+                    &store.url.clone().trim_end_matches('/')
                 ))
 
                     // For this first version, I simply "borrowed" the "Safe
@@ -99,16 +99,16 @@ pub async fn run(stores: Vec<stores::Store>) {
                             for channel in (*password_down).iter() {
                                 webhooks.push(password(
                                     Password::Down,
-                                    channel.url.to_owned(),
-                                    channel.settings.username.to_owned(),
-                                    channel.settings.avatar.to_owned(),
+                                    channel.url.clone(),
+                                    channel.settings.username.clone(),
+                                    channel.settings.avatar.clone(),
                                     channel.settings.color,
-                                    channel.settings.footer_text.to_owned(),
-                                    channel.settings.footer_image.to_owned(),
+                                    channel.settings.footer_text.clone(),
+                                    channel.settings.footer_image.clone(),
                                     channel.settings.timestamp,
-                                    store.name.to_owned(),
-                                    store.url.to_owned(),
-                                    store.logo.to_owned()
+                                    store.name.clone(),
+                                    store.url.clone(),
+                                    store.logo.clone()
                                 ));
                             }
 
@@ -214,19 +214,19 @@ pub async fn run(stores: Vec<stores::Store>) {
                                                 webhooks.push(item(
                                                     Item::Restock,
                                                     ap.clone(),
-                                                    channel.url.to_owned(),
-                                                    channel.settings.username.to_owned(),
-                                                    channel.settings.avatar.to_owned(),
+                                                    channel.url.clone(),
+                                                    channel.settings.username.clone(),
+                                                    channel.settings.avatar.clone(),
                                                     channel.settings.color,
                                                     channel.settings.sizes,
                                                     channel.settings.thumbnail,
                                                     channel.settings.image,
-                                                    channel.settings.footer_text.to_owned(),
-                                                    channel.settings.footer_image.to_owned(),
+                                                    channel.settings.footer_text.clone(),
+                                                    channel.settings.footer_image.clone(),
                                                     channel.settings.timestamp,
-                                                    store.name.to_owned(),
-                                                    store.url.to_owned(),
-                                                    store.logo.to_owned()
+                                                    store.name.clone(),
+                                                    store.url.clone(),
+                                                    store.logo.clone()
                                                 ));
 
                                                 // hidden!("Pushed a webhook for product {}!", curr.id);
@@ -257,25 +257,25 @@ pub async fn run(stores: Vec<stores::Store>) {
 
                                         let mut webhooks = vec![];
 
-                                        let ap = available_product(curr.to_owned());
+                                        let ap = available_product(curr);
 
                                         for channel in (*restock).iter() {
                                             webhooks.push(item(
                                                 Item::New,
                                                 ap.clone(),
-                                                channel.url.to_owned(),
-                                                channel.settings.username.to_owned(),
-                                                channel.settings.avatar.to_owned(),
+                                                channel.url.clone(),
+                                                channel.settings.username.clone(),
+                                                channel.settings.avatar.clone(),
                                                 channel.settings.color,
                                                 channel.settings.sizes,
                                                 channel.settings.thumbnail,
                                                 channel.settings.image,
-                                                channel.settings.footer_text.to_owned(),
-                                                channel.settings.footer_image.to_owned(),
+                                                channel.settings.footer_text.clone(),
+                                                channel.settings.footer_image.clone(),
                                                 channel.settings.timestamp,
-                                                store.name.to_owned(),
-                                                store.url.to_owned(),
-                                                store.logo.to_owned()
+                                                store.name.clone(),
+                                                store.url.clone(),
+                                                store.logo.clone()
                                             ));
                                         }
 
@@ -334,16 +334,16 @@ pub async fn run(stores: Vec<stores::Store>) {
                             for channel in (*password_up).iter() {
                                 webhooks.push(password(
                                     Password::Up,
-                                    channel.url.to_owned(),
-                                    channel.settings.username.to_owned(),
-                                    channel.settings.avatar.to_owned(),
+                                    channel.url.clone(),
+                                    channel.settings.username.clone(),
+                                    channel.settings.avatar.clone(),
                                     channel.settings.color,
-                                    channel.settings.footer_text.to_owned(),
-                                    channel.settings.footer_image.to_owned(),
+                                    channel.settings.footer_text.clone(),
+                                    channel.settings.footer_image.clone(),
                                     channel.settings.timestamp,
-                                    store.name.to_owned(),
-                                    store.url.to_owned(),
-                                    store.logo.to_owned()
+                                    store.name.clone(),
+                                    store.url.clone(),
+                                    store.logo.clone()
                                 ));
                             }
 
@@ -411,12 +411,12 @@ pub fn minimal_products(current_products: Arc<Vec<Product>>) -> Option<Vec<Minim
                 variants.push(MinimalVariant {
                     id: variant.id,
                     available: variant.available,
-                    // updated_at: variant.updated_at.to_owned(),
+                    // updated_at: variant.updated_at.clone(),
                 });
             }
             products.push(MinimalProduct {
                 id: product.id,
-                updated_at: product.updated_at.to_owned(),
+                updated_at: product.updated_at.clone(),
                 variants,
             });
         }
@@ -464,7 +464,11 @@ pub struct AvailableProduct {
     pub handle: String,
     pub brand: String,
     pub price: String,
-    pub image: String,
+
+    // I changed this to an `Option` as for some reason (which I can't
+    // remember) I was using an empty `String` instead of `None` if the
+    // product didn't have a photo.
+    pub image: Option<String>,
     pub variants: Vec<AvailableVariant>,
 }
 
@@ -490,13 +494,21 @@ pub fn available_product(
 ) -> Arc<AvailableProduct> {
     let mut variants: Vec<AvailableVariant> = vec![];
 
-    // The default price value is "?" because it must be at least 1
-    // character long.
-    let mut price = "?".to_owned();
+    let price = if let Some(v) = curr.variants.get(0) {
+        v.price.clone()
+    } else {
+        // The default price value is "?" because it must be at least 1
+        // character long.
+        "?".into()
+    };
 
-    if let Some(v) = curr.variants.get(0) {
-        price = v.price.to_owned();
-    }
+    // let image = if let Some(img) = curr.images.get(0) {
+    //     Some(img.src.clone())
+    // } else {
+    //     None
+    // };
+
+    let image = curr.images.get(0).map(|img| img.src.clone());
 
     for variant in curr.variants.iter() {
         if variant.available {
@@ -508,19 +520,19 @@ pub fn available_product(
             //     if let Some(v) = p.iter().find(|v| v.id == variant.id) {
             //         if !v.available {
             //             variants.push(AvailableVariant {
-            //             name: variant.title.to_owned(),
+            //             name: variant.title.clone(),
             //             id: variant.id,
             //             });
             //         }
             //     } else {
             //         variants.push(AvailableVariant {
-            //             name: variant.title.to_owned(),
+            //             name: variant.title.clone(),
             //             id: variant.id,
             //         });
             //     }
             // } else {
             //     variants.push(AvailableVariant {
-            //         name: variant.title.to_owned(),
+            //         name: variant.title.clone(),
             //         id: variant.id,
             //     });
             // }
@@ -549,17 +561,11 @@ pub fn available_product(
     }
 
     Arc::from(AvailableProduct {
-        name: curr.title.to_owned(),
-        handle: curr.handle.to_owned(),
-        brand: curr.vendor.to_owned(),
+        name: curr.title.clone(),
+        handle: curr.handle.clone(),
+        brand: curr.vendor.clone(),
         price,
-        image: {
-            if let Some(img) = curr.images.get(0) {
-                img.src.to_owned()
-            } else {
-                "".into()
-            }
-        },
+        image,
         variants,
     })
 }
@@ -573,7 +579,7 @@ async fn request(url: String, msg: Arc<Message>) {
     // hidden!("`request()` started!");
 
     loop {
-        let status = webhook::send(url.to_owned(), msg.clone()).await;
+        let status = webhook::send(url.clone(), msg.clone()).await;
 
         // hidden!("Webhook Status: {:?}!", status);
 
@@ -621,12 +627,12 @@ async fn item(
     store_url: String,
     store_logo: String,
 ) {
-    // hidden!("`item()` started for {}!", product.name.to_owned());
+    // hidden!("`item()` started for {}!", product.name.clone());
 
     let msg = Arc::from(Message {
         content: None,
         embeds: Some(vec![Embed {
-            title: Some(product.name.to_owned()),
+            title: Some(product.name.clone()),
             description: None,
             url: Some(format!("{}/products/{}", store_url, product.handle)),
             color,
@@ -670,13 +676,13 @@ async fn item(
                 fields.push(Field {
                     name: "Brand".into(),
                     inline: Some(true),
-                    value: product.brand.to_owned(),
+                    value: product.brand.clone(),
                 });
 
                 fields.push(Field {
                     name: "Price".into(),
                     inline: Some(true),
-                    value: product.price.to_owned(),
+                    value: product.price.clone(),
                 });
 
                 // hidden!("{} has {} updated variants!", product.name, product.variants.len());
@@ -716,7 +722,7 @@ async fn item(
             },
             author: Some(Author {
                 name: store_name,
-                url: Some(store_url.to_owned()),
+                url: Some(store_url.clone()),
                 icon_url: Some(store_logo),
             }),
             footer: {
@@ -740,29 +746,52 @@ async fn item(
                 }
             },
             image: {
-                if image && !product.image.is_empty() {
-                    Some(Image {
-                        url: product.image.to_owned(),
-                    })
-                } else {
-                    None
+                // This isn't very elegant, but I copied it from the
+                // `thumbnail` field below where it was the only
+                // solution i found.
+
+                let mut img = None;
+                if image && product.image.is_some() {
+                    img = Some(Image {
+                        url: product.image.clone().unwrap(),
+                    });
                 }
+                img
             },
             thumbnail: {
-                if thumbnail && !product.image.is_empty() {
-                    Some(Thumbnail {
-                        url: product.image.to_owned(),
-                    })
-                } else {
-                    None
+                let mut tn = None;
+                if thumbnail && product.image.is_some() {
+                    tn = Some(Thumbnail {
+                        url: product.image.clone().unwrap(),
+                    });
                 }
+                tn
+
+                // These two attempts at setting the `thumbnail` field
+                // failed and I'm not sure why.
+
+                // if thumbnail {
+                //     if let Some(img) = product.image {
+                //         Some(Thumbnail {
+                //             url: img.clone(),
+                //         })
+                //     }
+                // }
+                // None
+
+                // if thumbnail && product.image.is_some() {
+                //     Some(Thumbnail {
+                //         url: product.image.clone().unwrap(),
+                //     })
+                // }
+                // None
             },
         }]),
         username,
-        avatar_url: avatar.to_owned(),
+        avatar_url: avatar.clone(),
     });
 
-    // hidden!("Calling `request()` for {}!", product.name.to_owned());
+    // hidden!("Calling `request()` for {}!", product.name.clone());
 
     request(url, msg).await;
 }
@@ -789,7 +818,7 @@ async fn password(
     // In order for the Webhook URL to be included in the logs if the
     // task fails, it has to be cloned, or it will be consumed when it's
     // `move`d into the task.
-    let webhook_url = url.to_owned();
+    let webhook_url = url.clone();
 
     let task = task::spawn(async move {
         let msg = Arc::from(Message {
@@ -803,12 +832,12 @@ async fn password(
                     }
                 })),
                 description: None,
-                url: Some(store_url.to_owned()),
+                url: Some(store_url.clone()),
                 color,
                 fields: None,
                 author: Some(Author {
                     name: store_name,
-                    url: Some(store_url.to_owned()),
+                    url: Some(store_url.clone()),
                     icon_url: Some(store_logo),
                 }),
                 footer: {
@@ -835,7 +864,7 @@ async fn password(
                 thumbnail: None,
             }]),
             username,
-            avatar_url: avatar.to_owned(),
+            avatar_url: avatar.clone(),
         });
 
         request(url, msg).await;

@@ -16,7 +16,7 @@ pub async fn send(url: String, msg: Arc<Message>) -> Status {
     // println!("{}", to_string_pretty(&*msg).unwrap());
 
     let client = Client::new();
-    let req = client.post(url.to_owned()).json(&*msg).send().await;
+    let req = client.post(url.clone()).json(&*msg).send().await;
 
     if let Ok(res) = req {
         hidden!("Sent webhook to {}!, Status: {}", url, res.status());

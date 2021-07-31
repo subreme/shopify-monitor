@@ -7,14 +7,20 @@ use crate::{alternative::Alternative as Alt, config, default, hidden, warning};
 use std::sync::Arc;
 
 pub fn get() -> Vec<Store> {
-    let c = config::read();
+    let config = config::read();
+
+    // As usual, `hidden!()` came to the rescue when I couldn't figure
+    // out where a bug originated from. I didn't use `println!()` as the
+    // example config file is so long that Visual Studio Code's terminal
+    // won't display all of it if you scroll  up.
+    // hidden!("\n{:#?}", config);
 
     // this vector, which will then be passed to the `monitor::run()`
     // function, will be filled with one `Store` struct per site listed
     // in `config.json`, along with every event the user has selected.
     let mut stores: Vec<Store> = vec![];
 
-    for site in c.sites {
+    for site in config.sites {
         // A mutable vector is created for each event type
         let mut restock: Vec<Arc<Channel>> = vec![];
         let mut password_up: Vec<Arc<Channel>> = vec![];
@@ -80,7 +86,7 @@ pub fn get() -> Vec<Store> {
         // release for too long for me to work on those now. This module
         // is only run when the program is initializing, so the slight
         // increase in memory usage isn't a concern.
-        for server in c.servers.clone() {
+        for server in config.servers.clone() {
             // After creating `Alt` I was posed with a dilemma related
             // to where I should place the logic to determine which
             // settings to use in each channel. Although the performance
@@ -118,122 +124,108 @@ pub fn get() -> Vec<Store> {
             // There is no need for `Option<bool>`s, as `None` would be
             // equivalent to the default boolean value anyway.
 
-            let mut username: Option<String> = None;
-            let mut avatar: Option<String> = None;
-            let mut color: Option<String> = None;
-            let mut sizes: bool = false;
-            let mut thumbnail: bool = false;
-            let mut image: bool = false;
-            let mut footer_text: Option<String> = None;
-            let mut footer_image: Option<String> = None;
-            let mut timestamp: bool = false;
+            let mut server_settings = Settings::new();
+
+            // The `color` setting has its own variable, as the type
+            // input by users (`String`) doesn't match the one expected
+            // by the monitor (`u32`).
+            let mut color = None;
 
             if let Alt::Some(settings) = &server.settings {
                 // Although in the example in `config.rs` I used `.is_some()`
                 // and `.unwrap()`, i know what those methods contain, as I
                 // wrote them, and using `if let` uses fewer steps.
                 if let Alt::Some(value) = &settings.username {
-                    username = Some(value.into())
+                    server_settings.username = Some(value.into());
                 }
 
                 if let Alt::Some(value) = &settings.avatar {
-                    avatar = Some(value.into())
+                    server_settings.avatar = Some(value.into());
                 }
 
-                if let Alt::Some(value) = &settings.color {
-                    color = Some(value.into())
-                }
+                color = settings.color.clone().into();
 
                 if let Alt::Some(value) = settings.sizes {
-                    sizes = value
+                    server_settings.sizes = value;
                 }
 
                 if let Alt::Some(value) = settings.thumbnail {
-                    thumbnail = value
+                    server_settings.thumbnail = value;
                 }
 
                 if let Alt::Some(value) = settings.image {
-                    image = value
+                    server_settings.image = value;
                 }
 
                 if let Alt::Some(value) = &settings.footer_text {
-                    footer_text = Some(value.into())
+                    server_settings.footer_text = Some(value.into());
                 }
 
                 if let Alt::Some(value) = &settings.footer_image {
-                    footer_image = Some(value.into())
+                    server_settings.footer_image = Some(value.into());
                 }
 
                 if let Alt::Some(value) = settings.timestamp {
-                    timestamp = value
+                    server_settings.timestamp = value;
                 }
             }
 
             for channel in server.channels {
+                let mut channel_settings = server_settings.clone();
+                let mut color = color.clone();
+
                 if let Alt::Some(settings) = &channel.settings {
                     if let Alt::Some(value) = &settings.username {
-                        username = Some(value.into())
+                        channel_settings.username = Some(value.into());
                     } else if settings.username.is_null() {
-                        username = None;
+                        channel_settings.username = None;
                     }
 
                     if let Alt::Some(value) = &settings.avatar {
-                        avatar = Some(value.into())
+                        channel_settings.avatar = Some(value.into());
                     } else if settings.avatar.is_null() {
-                        avatar = None;
+                        channel_settings.avatar = None;
                     }
 
-                    if let Alt::Some(value) = &settings.color {
-                        color = Some(value.into())
-                    } else if settings.color.is_null() {
-                        color = None;
-                    }
+                    color = settings.color.clone().into();
 
                     if let Alt::Some(value) = settings.sizes {
-                        sizes = value
+                        channel_settings.sizes = value;
                     } else if settings.sizes.is_null() {
-                        sizes = false;
+                        channel_settings.sizes = false;
                     }
 
                     if let Alt::Some(value) = settings.thumbnail {
-                        thumbnail = value
+                        channel_settings.thumbnail = value;
                     } else if settings.thumbnail.is_null() {
-                        thumbnail = false;
+                        channel_settings.thumbnail = false;
                     }
 
                     if let Alt::Some(value) = settings.image {
-                        image = value
+                        channel_settings.image = value;
                     } else if settings.image.is_null() {
-                        image = false;
+                        channel_settings.image = false;
                     }
 
                     if let Alt::Some(value) = &settings.footer_text {
-                        footer_text = Some(value.into())
+                        channel_settings.footer_text = Some(value.into());
                     } else if settings.footer_text.is_null() {
-                        footer_text = None;
+                        channel_settings.footer_text = None;
                     }
 
                     if let Alt::Some(value) = &settings.footer_image {
-                        footer_image = Some(value.into())
+                        channel_settings.footer_image = Some(value.into());
                     } else if settings.footer_image.is_null() {
-                        footer_image = None;
+                        channel_settings.footer_image = None;
                     }
 
                     if let Alt::Some(value) = settings.timestamp {
-                        timestamp = value
+                        channel_settings.timestamp = value;
                     } else if settings.timestamp.is_null() {
-                        timestamp = false;
+                        channel_settings.timestamp = false;
                     }
                 } else if channel.settings.is_null() {
-                    username = None;
-                    avatar = None;
-                    color = None;
-                    sizes = false;
-                    thumbnail = false;
-                    image = false;
-                    footer_text = None;
-                    footer_image = None;
-                    timestamp = false;
+                    channel_settings = Settings::new();
                 }
 
                 // Just to clarify, in this context `site` refers to the
@@ -241,70 +233,61 @@ pub fn get() -> Vec<Store> {
                 // through each one and checks if it's referenced, as a
                 // `store`, within a channel.
                 for store in channel.sites.clone() {
+                    let mut store_settings = channel_settings.clone();
+                    let mut color = color.clone();
+
                     if let Alt::Some(settings) = &store.settings {
                         if let Alt::Some(value) = &settings.username {
-                            username = Some(value.into())
+                            store_settings.username = Some(value.into());
                         } else if settings.username.is_null() {
-                            username = None;
+                            store_settings.username = None;
                         }
 
                         if let Alt::Some(value) = &settings.avatar {
-                            avatar = Some(value.into())
+                            store_settings.avatar = Some(value.into());
                         } else if settings.avatar.is_null() {
-                            avatar = None;
+                            store_settings.avatar = None;
                         }
 
-                        if let Alt::Some(value) = &settings.color {
-                            color = Some(value.into())
-                        } else if settings.color.is_null() {
-                            color = None;
-                        }
+                        color = settings.color.clone().into();
 
                         if let Alt::Some(value) = settings.sizes {
-                            sizes = value
+                            store_settings.sizes = value;
                         } else if settings.sizes.is_null() {
-                            sizes = false;
+                            store_settings.sizes = false;
                         }
 
                         if let Alt::Some(value) = settings.thumbnail {
-                            thumbnail = value
+                            store_settings.thumbnail = value;
                         } else if settings.thumbnail.is_null() {
-                            thumbnail = false;
+                            store_settings.thumbnail = false;
                         }
 
                         if let Alt::Some(value) = settings.image {
-                            image = value
+                            store_settings.image = value;
                         } else if settings.image.is_null() {
-                            image = false;
+                            store_settings.image = false;
                         }
 
                         if let Alt::Some(value) = &settings.footer_text {
-                            footer_text = Some(value.into())
+                            store_settings.footer_text = Some(value.into());
                         } else if settings.footer_text.is_null() {
-                            footer_text = None;
+                            store_settings.footer_text = None;
                         }
 
                         if let Alt::Some(value) = &settings.footer_image {
-                            footer_image = Some(value.into())
+                            store_settings.footer_image = Some(value.into());
                         } else if settings.footer_image.is_null() {
-                            footer_image = None;
+                            store_settings.footer_image = None;
                         }
 
                         if let Alt::Some(value) = settings.timestamp {
-                            timestamp = value
+                            store_settings.timestamp = value;
                         } else if settings.timestamp.is_null() {
-                            timestamp = false;
+                            store_settings.timestamp = false;
                         }
-                    } else if channel.settings.is_null() {
-                        username = None;
-                        avatar = None;
-                        color = None;
-                        sizes = false;
-                        thumbnail = false;
-                        image = false;
-                        footer_text = None;
-                        footer_image = None;
-                        timestamp = false;
+                    } else if store.settings.is_null() {
+                        store_settings = Settings::new();
                     }
 
                     // Since every event is being checked and the
@@ -314,70 +297,60 @@ pub fn get() -> Vec<Store> {
                     // In the future, this could be prevented by using
                     // `HashMap`s with webhook URLs as keys, instead.
                     for event in store.events.clone() {
+                        let mut event_settings = store_settings.clone();
+
                         if let Alt::Some(settings) = &event.settings {
                             if let Alt::Some(value) = &settings.username {
-                                username = Some(value.into())
+                                event_settings.username = Some(value.into());
                             } else if settings.username.is_null() {
-                                username = None;
+                                event_settings.username = None;
                             }
 
                             if let Alt::Some(value) = &settings.avatar {
-                                avatar = Some(value.into())
+                                event_settings.avatar = Some(value.into());
                             } else if settings.avatar.is_null() {
-                                avatar = None;
+                                event_settings.avatar = None;
                             }
 
-                            if let Alt::Some(value) = &settings.color {
-                                color = Some(value.into())
-                            } else if settings.color.is_null() {
-                                color = None;
-                            }
+                            color = settings.color.clone().into();
 
                             if let Alt::Some(value) = settings.sizes {
-                                sizes = value
+                                event_settings.sizes = value;
                             } else if settings.sizes.is_null() {
-                                sizes = false;
+                                event_settings.sizes = false;
                             }
 
                             if let Alt::Some(value) = settings.thumbnail {
-                                thumbnail = value
+                                event_settings.thumbnail = value;
                             } else if settings.thumbnail.is_null() {
-                                thumbnail = false;
+                                event_settings.thumbnail = false;
                             }
 
                             if let Alt::Some(value) = settings.image {
-                                image = value
+                                event_settings.image = value;
                             } else if settings.image.is_null() {
-                                image = false;
+                                event_settings.image = false;
                             }
 
                             if let Alt::Some(value) = &settings.footer_text {
-                                footer_text = Some(value.into())
+                                event_settings.footer_text = Some(value.into());
                             } else if settings.footer_text.is_null() {
-                                footer_text = None;
+                                event_settings.footer_text = None;
                             }
 
                             if let Alt::Some(value) = &settings.footer_image {
-                                footer_image = Some(value.into())
+                                event_settings.footer_image = Some(value.into());
                             } else if settings.footer_image.is_null() {
-                                footer_image = None;
+                                event_settings.footer_image = None;
                             }
 
                             if let Alt::Some(value) = settings.timestamp {
-                                timestamp = value
+                                event_settings.timestamp = value;
                             } else if settings.timestamp.is_null() {
-                                timestamp = false;
+                                event_settings.timestamp = false;
                             }
-                        } else if channel.settings.is_null() {
-                            username = None;
-                            avatar = None;
-                            color = None;
-                            sizes = false;
-                            thumbnail = false;
-                            image = false;
-                            footer_text = None;
-                            footer_image = None;
-                            timestamp = false;
+                        } else if store.settings.is_null() {
+                            event_settings = Settings::new();
                         }
 
                         // The `color()` function has been temporarily removed.
@@ -397,35 +370,35 @@ pub fn get() -> Vec<Store> {
                         // // function, always using `return`, to "calm down"
                         // // the compiler.
                         // let color = color(
-                        //     event.color.to_owned(),
-                        //     server.settings.color.to_owned(),
-                        //     server.name.to_owned(),
-                        //     channel.name.to_owned(),
+                        //     event.color.clone(),
+                        //     server.settings.color.clone(),
+                        //     server.name.clone(),
+                        //     channel.name.clone(),
                         //     channel.id,
                         // );
 
-                        let color = parse_color(color.to_owned());
+                        let color = parse_color(&color);
 
                         // If the site being iterated through is
                         // mentioned in a a channel (one of all the ones
                         // also being iterated through), its values are collected.
                         if store.name == site.name {
                             let channel = Arc::new(Channel {
-                                name: channel.name.to_owned(),
-                                // id: channel.id.to_owned(),
-                                url: channel.url.to_owned(),
+                                name: channel.name.clone(),
+                                // id: channel.id.clone(),
+                                url: channel.url.clone(),
                                 settings: Settings {
-                                    username: username.to_owned(),
-                                    avatar: avatar.to_owned(),
+                                    username: event_settings.username,
+                                    avatar: event_settings.avatar,
                                     color,
-                                    sizes,
-                                    // atc: server.settings.atc,
-                                    // price: server.settings.price,
-                                    thumbnail,
-                                    image,
-                                    footer_text: footer_text.to_owned(),
-                                    footer_image: footer_image.to_owned(),
-                                    timestamp,
+                                    sizes: event_settings.sizes,
+                                    // atc: event_settings.atc,
+                                    // price: event_settings.price,
+                                    thumbnail: event_settings.thumbnail,
+                                    image: event_settings.image,
+                                    footer_text: event_settings.footer_text,
+                                    footer_image: event_settings.footer_image,
+                                    timestamp: event_settings.timestamp,
                                 },
                             });
 
@@ -478,8 +451,8 @@ pub fn get() -> Vec<Store> {
         // sending requests to the website is useless.
         if !restock.is_empty() || !password_up.is_empty() || !password_down.is_empty() {
             stores.push(Store {
-                name: site.name.to_owned(),
-                url: site.url.to_owned(),
+                name: site.name.clone(),
+                url: site.url.clone(),
                 logo,
                 delay,
                 restock: Arc::new(restock),
@@ -488,10 +461,13 @@ pub fn get() -> Vec<Store> {
             })
         }
     }
+
+    // hidden!("\n{:#?}", stores);
+
     stores
 }
 
-fn parse_color(color: Option<String>) -> Option<u32> {
+fn parse_color(color: &Option<String>) -> Option<u32> {
     if let Some(code) = color {
         return Some(match code.to_lowercase().as_str() {
             "white" => 0xffffff,
@@ -603,6 +579,7 @@ fn parse_color(color: Option<String>) -> Option<u32> {
 //     }
 // }
 
+#[derive(Debug)]
 pub struct Store {
     pub name: String,
     pub url: String,
@@ -616,6 +593,7 @@ pub struct Store {
     pub password_down: Arc<Vec<Arc<Channel>>>,
 }
 
+#[derive(Debug)]
 pub struct Channel {
     pub name: String,
     // pub id: u64,
@@ -626,6 +604,7 @@ pub struct Channel {
     pub settings: Settings,
 }
 
+#[derive(Debug, Clone)]
 pub struct Settings {
     pub username: Option<String>,
     pub avatar: Option<String>,
@@ -638,4 +617,20 @@ pub struct Settings {
     pub footer_text: Option<String>,
     pub footer_image: Option<String>,
     pub timestamp: bool,
+}
+
+impl Settings {
+    fn new() -> Settings {
+        Settings {
+            username: None,
+            avatar: None,
+            color: None,
+            sizes: false,
+            thumbnail: false,
+            image: false,
+            footer_text: None,
+            footer_image: None,
+            timestamp: false,
+        }
+    }
 }

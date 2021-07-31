@@ -5,6 +5,7 @@
 config.example.json
 config.private.json
 error.json
+issue.md
 products.json
 message.json
 shopify-monitor.log

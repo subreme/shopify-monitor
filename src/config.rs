@@ -142,7 +142,7 @@ fn suggest_instructions() {
 
 // The `Config` struct is defined here, and the `derive` macro allows
 // `serde` to serialize and deserialize the contents of `config.json`
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Config {
     pub sites: VecMap<Site, SiteHM>,
     pub servers: VecMap<Server, ServerHM>,
@@ -200,14 +200,14 @@ pub struct Config {
 // of this type may already confuse possible contributors, I decided not
 // to add yet another enum, and some instances of the enum will have to
 // be annotated as `VecMap<Foo, Foo>`.
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 #[serde(untagged)]
 pub enum VecMap<T, U> {
     Vec(Vec<T>),
     Map(HashMap<String, U>),
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Site {
     pub name: String,
     pub url: String,
@@ -227,7 +227,7 @@ pub struct Site {
 // For a `VecMap<T, U>` to work, a second type `U` must be defined,
 // where the "identifier", usually being the `name` field, should be
 // removed from the struct as it will serve as the `HashMap`'s key.
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct SiteHM {
     pub url: String,
     pub logo: String,
@@ -267,7 +267,7 @@ impl IntoIterator for VecMap<Site, SiteHM> {
     }
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Server {
     // If the user chooses to use a `Vec` (or rather, an array) to list
     // the servers, the server names don't have to be unique, as the
@@ -280,6 +280,7 @@ pub struct Server {
 
     // One of the next comments, on top of `Settings`'s definition, will
     // explain why this is of type `Alternative` instead of `Option`.
+    #[serde(default)]
     pub settings: Alt<Settings>,
 
     // Channels are required, as there's no point in configuring a
@@ -294,8 +295,9 @@ pub struct Server {
     pub channels: VecMap<Channel, ChannelHM>,
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct ServerHM {
+    #[serde(default)]
     pub settings: Alt<Settings>,
     pub channels: VecMap<Channel, ChannelHM>,
 }
@@ -405,11 +407,15 @@ impl IntoIterator for VecMap<Server, ServerHM> {
 // included (achieving the same effect as an empty `struct`), and for
 // only "default" values to be used if they're set to `null`.
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Settings {
+    #[serde(default)]
     pub username: Alt<String>,
+    #[serde(default)]
     pub avatar: Alt<String>,
+    #[serde(default)]
     pub color: Alt<String>,
+    #[serde(default)]
     pub sizes: Alt<bool>,
 
     // This toggle was removed, as I was unable to find a way to form
@@ -419,18 +425,24 @@ pub struct Settings {
     // pub atc: Option<bool>,
 
     // Although I was planning to include the option to select whether
-    // to include the product item or not, I decided to "strip users of
+    // to include the item price or not, I decided to "strip users of
     // this power" as I couldn't figure out a way to make the embeds
     // look balanced if the brand was included but the price wasn't.
     // pub price: Option<bool>,
+    #[serde(default)]
     pub thumbnail: Alt<bool>,
+    #[serde(default)]
     pub image: Alt<bool>,
+    #[serde(default)]
     pub footer_text: Alt<String>,
+    #[serde(default)]
     pub footer_image: Alt<String>,
+    #[serde(default)]
     pub timestamp: Alt<bool>,
 
     // For this field, a `HashMap` could help keep track of what each
     // "keyword group" is targeting, if that helps.
+    #[serde(default)]
     pub keywords: Alt<VecMap<Keyword, Keyword>>,
 }
 
@@ -440,7 +452,7 @@ pub struct Settings {
 // with a plural name, so that would have been inconsistent (and would
 // have "impeded me" from writing "for keyword in keywords", which would
 // be weird).
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Keyword {
     // These fields are also `Alt`s, so that they can be set to `null`
     // to ignore the "higher level" ones set for a wider scope. Even
@@ -495,7 +507,9 @@ pub struct Keyword {
     // that any array could be replaced with an object in the README. I
     // can't imagine any scenario where someone would need to use a
     // `HashMap` here, but oh well.
+    #[serde(default)]
     pub include: Alt<VecMap<String, String>>,
+    #[serde(default)]
     pub exclude: Alt<VecMap<String, String>>,
 
     // This doesn't need to be an `Alt` as if it's null it will be given
@@ -504,7 +518,7 @@ pub struct Keyword {
     pub combine: Option<bool>,
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Channel {
     pub name: String,
 
@@ -515,6 +529,7 @@ pub struct Channel {
     // so it was removed.
     // pub id: u64,
     pub url: String,
+    #[serde(default)]
     pub settings: Alt<Settings>,
 
     // By having the field names correspond to a site, it's impossible
@@ -534,7 +549,7 @@ pub struct Channel {
 // `id`s are unique, JSON keys must be Strings.
 
 //
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct ChannelHM {
     // This field was removed. The original idea was that the value
     // would be used instead of the key to it as the channel name,
@@ -551,6 +566,7 @@ pub struct ChannelHM {
     // // the limitation cause by the type not allowing duplicate keys.
     // pub name: Option<String>,
     pub url: String,
+    #[serde(default)]
     pub settings: Alt<Settings>,
     pub sites: VecMap<Store, StoreHM>,
 }
@@ -584,9 +600,10 @@ impl IntoIterator for VecMap<Channel, ChannelHM> {
 // Just like with `Keyword`, `crate::stores` has an identically named
 // struct, but this is not an issue as this type is only meant to be used
 // from within this module.
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Store {
     pub name: String,
+    #[serde(default)]
     pub settings: Alt<Settings>,
 
     // If they choose so, users can "name" each event by using a
@@ -596,8 +613,9 @@ pub struct Store {
     pub events: VecMap<Event, Event>,
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct StoreHM {
+    #[serde(default)]
     pub settings: Alt<Settings>,
     pub events: VecMap<Event, Event>,
 }
@@ -627,8 +645,9 @@ impl IntoIterator for VecMap<Store, StoreHM> {
     }
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct Event {
+    #[serde(default)]
     pub settings: Alt<Settings>,
     pub restock: Option<bool>,
     pub password_up: Option<bool>,
@@ -658,7 +677,7 @@ impl IntoIterator for VecMap<Event, Event> {
     }
 }
 
-#[derive(Deserialize, Serialize, Clone)]
+#[derive(Deserialize, Serialize, Clone, Debug)]
 pub struct ProxyList {
     pub name: String,
 

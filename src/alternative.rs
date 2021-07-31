@@ -109,6 +109,15 @@ impl<T> From<Option<T>> for Alternative<T> {
     }
 }
 
+impl<T> From<Alternative<T>> for Option<T> {
+    fn from(alternative: Alternative<T>) -> Option<T> {
+        match alternative {
+            Alternative::Some(value) => Some(value),
+            _ => None,
+        }
+    }
+}
+
 impl<'de, T> Deserialize<'de> for Alternative<T>
 where
     T: Deserialize<'de>,
@@ -130,7 +139,7 @@ impl<T: Serialize> Serialize for Alternative<T> {
             Alternative::Null => serializer.serialize_none(),
             Alternative::Some(value) => value.serialize(serializer),
             Alternative::None => Err(Error::custom(
-                r#"Alternative fields must be annotated with: 
+                r#"Alternative fields must be annotated with:
   #[serde(default, skip_serializing_if = "Alternative::is_none")]"#,
             )),
         }
