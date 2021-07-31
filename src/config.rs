@@ -440,6 +440,10 @@ pub struct Settings {
     #[serde(default)]
     pub timestamp: Alt<bool>,
 
+    // This field's type is `usize` as it's the same one use for the
+    // length of `Vec`s, which this value is compared to.
+    pub minimum: Alt<usize>,
+
     // For this field, a `HashMap` could help keep track of what each
     // "keyword group" is targeting, if that helps.
     #[serde(default)]

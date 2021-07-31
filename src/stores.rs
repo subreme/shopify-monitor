@@ -168,6 +168,10 @@ pub fn get() -> Vec<Store> {
                 if let Alt::Some(value) = settings.timestamp {
                     server_settings.timestamp = value;
                 }
+
+                if let Alt::Some(value) = settings.minimum {
+                    server_settings.minimum = value;
+                }
             }
 
             for channel in server.channels {
@@ -223,6 +227,12 @@ pub fn get() -> Vec<Store> {
                         channel_settings.timestamp = value;
                     } else if settings.timestamp.is_null() {
                         channel_settings.timestamp = false;
+                    }
+
+                    if let Alt::Some(value) = settings.minimum {
+                        channel_settings.minimum = value;
+                    } else if settings.minimum.is_null() {
+                        channel_settings.minimum = 0;
                     }
                 } else if channel.settings.is_null() {
                     channel_settings = Settings::new();
@@ -285,6 +295,12 @@ pub fn get() -> Vec<Store> {
                             store_settings.timestamp = value;
                         } else if settings.timestamp.is_null() {
                             store_settings.timestamp = false;
+                        }
+
+                        if let Alt::Some(value) = settings.minimum {
+                            store_settings.minimum = value;
+                        } else if settings.minimum.is_null() {
+                            store_settings.minimum = 0;
                         }
                     } else if store.settings.is_null() {
                         store_settings = Settings::new();
@@ -349,6 +365,12 @@ pub fn get() -> Vec<Store> {
                             } else if settings.timestamp.is_null() {
                                 event_settings.timestamp = false;
                             }
+
+                            if let Alt::Some(value) = settings.minimum {
+                                event_settings.minimum = value;
+                            } else if settings.minimum.is_null() {
+                                event_settings.minimum = 0;
+                            }
                         } else if store.settings.is_null() {
                             event_settings = Settings::new();
                         }
@@ -399,6 +421,7 @@ pub fn get() -> Vec<Store> {
                                     footer_text: event_settings.footer_text,
                                     footer_image: event_settings.footer_image,
                                     timestamp: event_settings.timestamp,
+                                    minimum: event_settings.minimum,
                                 },
                             });
 
@@ -617,6 +640,7 @@ pub struct Settings {
     pub footer_text: Option<String>,
     pub footer_image: Option<String>,
     pub timestamp: bool,
+    pub minimum: usize,
 }
 
 impl Settings {
@@ -631,6 +655,7 @@ impl Settings {
             footer_text: None,
             footer_image: None,
             timestamp: false,
+            minimum: 0,
         }
     }
 }

@@ -6,7 +6,8 @@ use crate::{
     default, hidden,
     message::*,
     products::{File, Product},
-    stores, success, warning,
+    stores::Store,
+    success, warning,
     webhook::{self, Status},
 };
 use chrono::prelude::*;
@@ -17,7 +18,7 @@ use tokio::{
     time::{self, sleep},
 };
 
-pub async fn run(stores: Vec<stores::Store>) {
+pub async fn run(stores: Vec<Store>) {
     let mut tasks = vec![];
 
     for store in stores {
@@ -55,15 +56,15 @@ pub async fn run(stores: Vec<stores::Store>) {
                     // will experiment with more techniques to avoid bot detection
                     // later. Here's the link to his repository:
                     // https://github.com/aarock1234/shopify-monitor/blob/master/src/class/monitor.js.
-                    .header("pragma", "no-cache") 
-                    .header("cache-control", "no-cache") 
-                    .header("upgrade-insecure-requests", "1") 
+                    .header("pragma", "no-cache")
+                    .header("cache-control", "no-cache")
+                    .header("upgrade-insecure-requests", "1")
                     .header("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36") 
                     .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9") 
-                    .header("sec-fetch-site", "none") 
-                    .header("sec-fetch-mode", "navigate") 
-                    .header("sec-fetch-user", "?1") 
-                    .header("sec-fetch-dest", "document") 
+                    .header("sec-fetch-site", "none")
+                    .header("sec-fetch-mode", "navigate")
+                    .header("sec-fetch-user", "?1")
+                    .header("sec-fetch-dest", "document")
                     .header("accept-language", "en-US,en;q=0.9")
 
                     // .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
@@ -202,34 +203,41 @@ pub async fn run(stores: Vec<stores::Store>) {
                                             let ap = available_product(curr);
 
                                             for channel in (*restock).iter() {
-                                                // Although it may not
-                                                // seem like it at first
-                                                // glance, `item()` is a
-                                                // function, and
-                                                // `webhooks` contains
-                                                // an asynchronous
-                                                // function for each
-                                                // webhook that should
-                                                // be sent.
-                                                webhooks.push(item(
-                                                    Item::Restock,
-                                                    ap.clone(),
-                                                    channel.url.clone(),
-                                                    channel.settings.username.clone(),
-                                                    channel.settings.avatar.clone(),
-                                                    channel.settings.color,
-                                                    channel.settings.sizes,
-                                                    channel.settings.thumbnail,
-                                                    channel.settings.image,
-                                                    channel.settings.footer_text.clone(),
-                                                    channel.settings.footer_image.clone(),
-                                                    channel.settings.timestamp,
-                                                    store.name.clone(),
-                                                    store.url.clone(),
-                                                    store.logo.clone()
-                                                ));
+                                                if curr.variants
+                                                    .iter()
+                                                    .filter(|v| v.available)
+                                                    .count() >= channel.settings.minimum {
+                                                    // Although it may
+                                                    // not seem like it
+                                                    // at first glance,
+                                                    // `item()` is a
+                                                    // function, and
+                                                    // `webhooks`
+                                                    // contains an
+                                                    // asynchronous
+                                                    // function for each
+                                                    // webhook that
+                                                    // should be sent.
+                                                    webhooks.push(item(
+                                                        Item::Restock,
+                                                        ap.clone(),
+                                                        channel.url.clone(),
+                                                        channel.settings.username.clone(),
+                                                        channel.settings.avatar.clone(),
+                                                        channel.settings.color,
+                                                        channel.settings.sizes,
+                                                        channel.settings.thumbnail,
+                                                        channel.settings.image,
+                                                        channel.settings.footer_text.clone(),
+                                                        channel.settings.footer_image.clone(),
+                                                        channel.settings.timestamp,
+                                                        store.name.clone(),
+                                                        store.url.clone(),
+                                                        store.logo.clone()
+                                                    ));
 
-                                                // hidden!("Pushed a webhook for product {}!", curr.id);
+                                                    // hidden!("Pushed a webhook for product {}!", curr.id);
+                                                }
                                             }
 
                                             // hidden!("Sending webhooks for `{}`!", curr.id);
