@@ -1,7 +1,5 @@
 // This is where the logic for the actual monitor will be.
 
-#![allow(clippy::too_many_arguments)]
-
 use crate::{
     default, hidden,
     message::*,
@@ -80,7 +78,6 @@ pub async fn run(stores: Vec<Store>) {
                     .await;
 
                 if let Ok(res) = req {
-                    // This log is only for debugging purposes.
                     // hidden!("Fetched {}! Status: {}!", res.url(), res.status());
 
                     if res.status() == 200 {
@@ -98,19 +95,19 @@ pub async fn run(stores: Vec<Store>) {
                             // channel that should be notified and send
                             // out a webhook.
                             for channel in (*password_down).iter() {
-                                webhooks.push(password(
-                                    Password::Down,
-                                    channel.url.clone(),
-                                    channel.settings.username.clone(),
-                                    channel.settings.avatar.clone(),
-                                    channel.settings.color,
-                                    channel.settings.footer_text.clone(),
-                                    channel.settings.footer_image.clone(),
-                                    channel.settings.timestamp,
-                                    store.name.clone(),
-                                    store.url.clone(),
-                                    store.logo.clone()
-                                ));
+                                webhooks.push(password(PasswordSettings {
+                                    kind: Password::Down,
+                                    url: channel.url.clone(),
+                                    username: channel.settings.username.clone(),
+                                    avatar: channel.settings.avatar.clone(),
+                                    color: channel.settings.color,
+                                    footer_text: channel.settings.footer_text.clone(),
+                                    footer_image: channel.settings.footer_image.clone(),
+                                    timestamp: channel.settings.timestamp,
+                                    store_name: store.name.clone(),
+                                    store_url: store.url.clone(),
+                                    store_logo: store.logo.clone()
+                                }));
                             }
 
                             let length = webhooks.len();
@@ -218,23 +215,23 @@ pub async fn run(stores: Vec<Store>) {
                                                     // function for each
                                                     // webhook that
                                                     // should be sent.
-                                                    webhooks.push(item(
-                                                        Item::Restock,
-                                                        ap.clone(),
-                                                        channel.url.clone(),
-                                                        channel.settings.username.clone(),
-                                                        channel.settings.avatar.clone(),
-                                                        channel.settings.color,
-                                                        channel.settings.sizes,
-                                                        channel.settings.thumbnail,
-                                                        channel.settings.image,
-                                                        channel.settings.footer_text.clone(),
-                                                        channel.settings.footer_image.clone(),
-                                                        channel.settings.timestamp,
-                                                        store.name.clone(),
-                                                        store.url.clone(),
-                                                        store.logo.clone()
-                                                    ));
+                                                    webhooks.push(item(ItemSettings {
+                                                        kind: Item::Restock,
+                                                        product: ap.clone(),
+                                                        url: channel.url.clone(),
+                                                        username: channel.settings.username.clone(),
+                                                        avatar: channel.settings.avatar.clone(),
+                                                        color: channel.settings.color,
+                                                        sizes: channel.settings.sizes,
+                                                        thumbnail: channel.settings.thumbnail,
+                                                        image: channel.settings.image,
+                                                        footer_text: channel.settings.footer_text.clone(),
+                                                        footer_image: channel.settings.footer_image.clone(),
+                                                        timestamp: channel.settings.timestamp,
+                                                        store_name: store.name.clone(),
+                                                        store_url: store.url.clone(),
+                                                        store_logo: store.logo.clone()
+                                                    }));
 
                                                     // hidden!("Pushed a webhook for product {}!", curr.id);
                                                 }
@@ -244,13 +241,18 @@ pub async fn run(stores: Vec<Store>) {
 
                                             let length = webhooks.len();
 
-                                            let s = if length == 1 {
-                                                '\0'
-                                            } else {
-                                                's'
-                                            };
-
-                                            default!("Sending {} webhook{}...", length, s);
+                                            default!("Sending {} webhook{}...",
+                                                length,
+                                                // This appends an "s" to
+                                                // the word "webhook" if
+                                                // more than one is
+                                                // sent.
+                                                if length == 1 {
+                                                    '\0'
+                                                } else {
+                                                    's'
+                                                }
+                                            );
 
                                             join_all(webhooks).await;
                                         }
@@ -268,23 +270,23 @@ pub async fn run(stores: Vec<Store>) {
                                         let ap = available_product(curr);
 
                                         for channel in (*restock).iter() {
-                                            webhooks.push(item(
-                                                Item::New,
-                                                ap.clone(),
-                                                channel.url.clone(),
-                                                channel.settings.username.clone(),
-                                                channel.settings.avatar.clone(),
-                                                channel.settings.color,
-                                                channel.settings.sizes,
-                                                channel.settings.thumbnail,
-                                                channel.settings.image,
-                                                channel.settings.footer_text.clone(),
-                                                channel.settings.footer_image.clone(),
-                                                channel.settings.timestamp,
-                                                store.name.clone(),
-                                                store.url.clone(),
-                                                store.logo.clone()
-                                            ));
+                                            webhooks.push(item(ItemSettings{
+                                                kind: Item::New,
+                                                product: ap.clone(),
+                                                url: channel.url.clone(),
+                                                username: channel.settings.username.clone(),
+                                                avatar: channel.settings.avatar.clone(),
+                                                color: channel.settings.color,
+                                                sizes: channel.settings.sizes,
+                                                thumbnail: channel.settings.thumbnail,
+                                                image: channel.settings.image,
+                                                footer_text:channel.settings.footer_text.clone(),
+                                                footer_image: channel.settings.footer_image.clone(),
+                                                timestamp: channel.settings.timestamp,
+                                                store_name: store.name.clone(),
+                                                store_url: store.url.clone(),
+                                                store_logo: store.logo.clone()
+                                            }));
                                         }
 
                                         let length = webhooks.len();
@@ -340,19 +342,19 @@ pub async fn run(stores: Vec<Store>) {
                             // channel that should be notified and send
                             // out a webhook.
                             for channel in (*password_up).iter() {
-                                webhooks.push(password(
-                                    Password::Up,
-                                    channel.url.clone(),
-                                    channel.settings.username.clone(),
-                                    channel.settings.avatar.clone(),
-                                    channel.settings.color,
-                                    channel.settings.footer_text.clone(),
-                                    channel.settings.footer_image.clone(),
-                                    channel.settings.timestamp,
-                                    store.name.clone(),
-                                    store.url.clone(),
-                                    store.logo.clone()
-                                ));
+                                webhooks.push(password(PasswordSettings {
+                                    kind: Password::Up,
+                                    url: channel.url.clone(),
+                                    username: channel.settings.username.clone(),
+                                    avatar: channel.settings.avatar.clone(),
+                                    color: channel.settings.color,
+                                    footer_text: channel.settings.footer_text.clone(),
+                                    footer_image: channel.settings.footer_image.clone(),
+                                    timestamp: channel.settings.timestamp,
+                                    store_name: store.name.clone(),
+                                    store_url: store.url.clone(),
+                                    store_logo: store.logo.clone()
+                                }));
                             }
 
                             let length = webhooks.len();
@@ -614,10 +616,7 @@ async fn request(url: String, msg: Arc<Message>) {
     }
 }
 
-// The function and enum are named `item()` and `Item`, and not
-// `product()` and `Product`, because the `Product` name is already used
-// by `crate::products::Product`, which is named after `products.json`.
-async fn item(
+pub struct ItemSettings {
     kind: Item,
     product: Arc<AvailableProduct>,
     url: String,
@@ -634,174 +633,165 @@ async fn item(
     store_name: String,
     store_url: String,
     store_logo: String,
-) {
+}
+
+// The function and enum are named `item()` and `Item`, and not
+// `product()` and `Product`, because the `Product` name is already used
+// by `crate::products::Product`, which is named after `products.json`.
+async fn item(settings: ItemSettings) {
     // hidden!("`item()` started for {}!", product.name.clone());
+
+    let embed = Embed {
+        title: Some(settings.product.name.clone()),
+        description: None,
+        url: Some(format!(
+            "{}/products/{}",
+            settings.store_url, settings.product.handle
+        )),
+        color: settings.color,
+        fields: {
+            let quantity = if settings.sizes {
+                // let len = 3 + product.variants.len();
+
+                // if len % 3 == 2 {
+                //     len + 4
+                // }
+
+                // len + 3
+
+                // Since the checks for the number of variants (above
+                // this comment) were removed, the number of fields
+                // is always 4 more than the number of variants, and
+                // is the vector holding them occasionally has a
+                // slightly larger capacity than necessary.
+                settings.product.variants.len() + 4
+            } else {
+                3
+            };
+
+            // The value calculated above is used to preallocate the
+            // correct amount of space in the heap to hold this
+            // vector, slightly improving performance.
+            let mut fields = Vec::with_capacity(quantity);
+
+            fields.push(Field {
+                name: "Event".into(),
+                inline: Some(true),
+                value: {
+                    if settings.kind == Item::New {
+                        "New Product".into()
+                    } else {
+                        "Restock".into()
+                    }
+                },
+            });
+
+            fields.push(Field {
+                name: "Brand".into(),
+                inline: Some(true),
+                value: settings.product.brand.clone(),
+            });
+
+            fields.push(Field {
+                name: "Price".into(),
+                inline: Some(true),
+                value: settings.product.price.clone(),
+            });
+
+            // hidden!("{} has {} updated variants!", settings.product.name, settings.product.variants.len());
+
+            if settings.sizes {
+                for variant in (*settings.product.variants).iter() {
+                    fields.push(Field {
+                        name: format!("Size {}", variant.name),
+                        inline: Some(true),
+                        value: format!("[ATC]({}/cart/add?id={})", settings.store_url, variant.id),
+                    });
+                }
+
+                // When the bottom row of a Discord embed
+                // has two fields, it is aligned differently from
+                // the other rows, which some users consider
+                // displeasing. As a test, it is currently always
+                // "corrected" by the program, which adds an
+                // invisible field when necessary. In a future
+                // update, a toggle may be added allowing users to
+                // opt out of this behavior.
+                if fields.len() % 3 == 2 {
+                    fields.push(Field {
+                        // The characters held by the `name` and
+                        // `value` fields are the `U+2800` "Braille
+                        // Pattern Blank" character, which can be
+                        // used to fool Discord into thinking that
+                        // they aren't blank.
+                        name: '⠀'.into(),
+                        inline: Some(true),
+                        value: '⠀'.into(),
+                    });
+                }
+            }
+
+            Some(fields)
+        },
+        author: Some(Author {
+            name: settings.store_name,
+            url: Some(settings.store_url.clone()),
+            icon_url: Some(settings.store_logo),
+        }),
+        footer: {
+            // The program doesn't check if a footer image was
+            // included, as if a timestamp or footer text
+            // weren't, it won't be rendered regardless.
+            if settings.footer_text.is_some() || settings.timestamp {
+                Some(Footer {
+                    text: settings.footer_text,
+                    icon_url: settings.footer_image,
+                })
+            } else {
+                None
+            }
+        },
+        timestamp: {
+            if settings.timestamp {
+                Some(Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true))
+            } else {
+                None
+            }
+        },
+        image: {
+            // This isn't very elegant, but I copied it from the
+            // `thumbnail` field below where it was the only
+            // solution i found.
+
+            let mut img = None;
+            if settings.image && settings.product.image.is_some() {
+                img = Some(Image {
+                    url: settings.product.image.clone().unwrap(),
+                });
+            }
+            img
+        },
+        thumbnail: {
+            let mut tn = None;
+            if settings.thumbnail && settings.product.image.is_some() {
+                tn = Some(Thumbnail {
+                    url: settings.product.image.clone().unwrap(),
+                });
+            }
+            tn
+        },
+    };
 
     let msg = Arc::from(Message {
         content: None,
-        embeds: Some(vec![Embed {
-            title: Some(product.name.clone()),
-            description: None,
-            url: Some(format!("{}/products/{}", store_url, product.handle)),
-            color,
-            fields: {
-                let quantity = if sizes {
-                    // let len = 3 + product.variants.len();
-
-                    // if len % 3 == 2 {
-                    //     len + 4
-                    // }
-
-                    // len + 3
-
-                    // Since the checks for the number of variants (above
-                    // this comment) were removed, the number of fields
-                    // is always 4 more than the number of variants, and
-                    // is the vector holding them occasionally has a
-                    // slightly larger capacity than necessary.
-                    product.variants.len() + 4
-                } else {
-                    3
-                };
-
-                // The value calculated above is used to preallocate the
-                // correct amount of space in the heap to hold this
-                // vector, slightly improving performance.
-                let mut fields = Vec::with_capacity(quantity);
-
-                fields.push(Field {
-                    name: "Event".into(),
-                    inline: Some(true),
-                    value: {
-                        if kind == Item::New {
-                            "New Product".into()
-                        } else {
-                            "Restock".into()
-                        }
-                    },
-                });
-
-                fields.push(Field {
-                    name: "Brand".into(),
-                    inline: Some(true),
-                    value: product.brand.clone(),
-                });
-
-                fields.push(Field {
-                    name: "Price".into(),
-                    inline: Some(true),
-                    value: product.price.clone(),
-                });
-
-                // hidden!("{} has {} updated variants!", product.name, product.variants.len());
-
-                if sizes {
-                    for variant in (*product.variants).iter() {
-                        fields.push(Field {
-                            name: format!("Size {}", variant.name),
-                            inline: Some(true),
-                            value: format!("[ATC]({}/cart/add?id={})", store_url, variant.id),
-                        });
-                    }
-
-                    // When the bottom row of a Discord embed
-                    // has two fields, it is aligned differently from
-                    // the other rows, which some users consider
-                    // displeasing. As a test, it is currently always
-                    // "corrected" by the program, which adds an
-                    // invisible field when necessary. In a future
-                    // update, a toggle may be added allowing users to
-                    // opt out of this behavior.
-                    if fields.len() % 3 == 2 {
-                        fields.push(Field {
-                            // The characters held by the `name` and
-                            // `value` fields are the `U+2800` "Braille
-                            // Pattern Blank" character, which can be
-                            // used to fool Discord into thinking that
-                            // they aren't blank.
-                            name: '⠀'.into(),
-                            inline: Some(true),
-                            value: '⠀'.into(),
-                        });
-                    }
-                }
-
-                Some(fields)
-            },
-            author: Some(Author {
-                name: store_name,
-                url: Some(store_url.clone()),
-                icon_url: Some(store_logo),
-            }),
-            footer: {
-                // The program doesn't check if a footer image was
-                // included, as if a timestamp or footer text
-                // weren't, it won't be rendered regardless.
-                if footer_text.is_some() || timestamp {
-                    Some(Footer {
-                        text: footer_text,
-                        icon_url: footer_image,
-                    })
-                } else {
-                    None
-                }
-            },
-            timestamp: {
-                if timestamp {
-                    Some(Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true))
-                } else {
-                    None
-                }
-            },
-            image: {
-                // This isn't very elegant, but I copied it from the
-                // `thumbnail` field below where it was the only
-                // solution i found.
-
-                let mut img = None;
-                if image && product.image.is_some() {
-                    img = Some(Image {
-                        url: product.image.clone().unwrap(),
-                    });
-                }
-                img
-            },
-            thumbnail: {
-                let mut tn = None;
-                if thumbnail && product.image.is_some() {
-                    tn = Some(Thumbnail {
-                        url: product.image.clone().unwrap(),
-                    });
-                }
-                tn
-
-                // These two attempts at setting the `thumbnail` field
-                // failed and I'm not sure why.
-
-                // if thumbnail {
-                //     if let Some(img) = product.image {
-                //         Some(Thumbnail {
-                //             url: img.clone(),
-                //         })
-                //     }
-                // }
-                // None
-
-                // if thumbnail && product.image.is_some() {
-                //     Some(Thumbnail {
-                //         url: product.image.clone().unwrap(),
-                //     })
-                // }
-                // None
-            },
-        }]),
-        username,
-        avatar_url: avatar.clone(),
+        embeds: Some(vec![embed]),
+        username: settings.username,
+        avatar_url: settings.avatar.clone(),
     });
 
     // hidden!("Calling `request()` for {}!", product.name.clone());
 
-    request(url, msg).await;
+    request(settings.url, msg).await;
 }
 
 #[derive(PartialEq)]
@@ -810,7 +800,7 @@ enum Item {
     Restock,
 }
 
-async fn password(
+pub struct PasswordSettings {
     kind: Password,
     url: String,
     username: Option<String>,
@@ -822,60 +812,64 @@ async fn password(
     store_name: String,
     store_url: String,
     store_logo: String,
-) {
+}
+
+async fn password(settings: PasswordSettings) {
     // In order for the Webhook URL to be included in the logs if the
     // task fails, it has to be cloned, or it will be consumed when it's
     // `move`d into the task.
-    let webhook_url = url.clone();
+    let webhook_url = settings.url.clone();
 
     let task = task::spawn(async move {
+        let embed = Embed {
+            title: Some(format!("Password Page {}!", {
+                if settings.kind == Password::Up {
+                    "Up"
+                } else {
+                    "Down"
+                }
+            })),
+            description: None,
+            url: Some(settings.store_url.clone()),
+            color: settings.color,
+            fields: None,
+            author: Some(Author {
+                name: settings.store_name,
+                url: Some(settings.store_url.clone()),
+                icon_url: Some(settings.store_logo),
+            }),
+            footer: {
+                // The program doesn't check if a footer image was
+                // included, as if a timestamp or footer text
+                // weren't, it won't be rendered regardless.
+                if settings.footer_text.is_some() || settings.timestamp {
+                    Some(Footer {
+                        text: settings.footer_text,
+                        icon_url: settings.footer_image,
+                    })
+                } else {
+                    None
+                }
+            },
+            timestamp: {
+                if settings.timestamp {
+                    Some(Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true))
+                } else {
+                    None
+                }
+            },
+            image: None,
+            thumbnail: None,
+        };
+
         let msg = Arc::from(Message {
             content: None,
-            embeds: Some(vec![Embed {
-                title: Some(format!("Password Page {}!", {
-                    if kind == Password::Up {
-                        "Up"
-                    } else {
-                        "Down"
-                    }
-                })),
-                description: None,
-                url: Some(store_url.clone()),
-                color,
-                fields: None,
-                author: Some(Author {
-                    name: store_name,
-                    url: Some(store_url.clone()),
-                    icon_url: Some(store_logo),
-                }),
-                footer: {
-                    // The program doesn't check if a footer image was
-                    // included, as if a timestamp or footer text
-                    // weren't, it won't be rendered regardless.
-                    if footer_text.is_some() || timestamp {
-                        Some(Footer {
-                            text: footer_text,
-                            icon_url: footer_image,
-                        })
-                    } else {
-                        None
-                    }
-                },
-                timestamp: {
-                    if timestamp {
-                        Some(Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true))
-                    } else {
-                        None
-                    }
-                },
-                image: None,
-                thumbnail: None,
-            }]),
-            username,
-            avatar_url: avatar.clone(),
+            embeds: Some(vec![embed]),
+            username: settings.username,
+            avatar_url: settings.avatar.clone(),
         });
 
-        request(url, msg).await;
+        request(settings.url, msg).await;
     })
     .await;
 

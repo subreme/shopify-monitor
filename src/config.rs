@@ -43,6 +43,8 @@ pub fn read() -> Config {
         default!("Trying again with `config.json`...");
     };
 
+    hidden!("Loading `config.json`...");
+
     // If the user didn't have a `config.private.json` file, the program
     // moves on to `config.json` like nothing happened, in order not to
     // confuse the user.

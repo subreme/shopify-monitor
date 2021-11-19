@@ -98,7 +98,8 @@ macro_rules! default {
 #[macro_export]
 macro_rules! success {
     // All log macros producing stylized (colored) output need to import
-    // the `Colored` trait, and are therefore also wrapped in parentheses.
+    // the `Colored` trait, and are therefore also wrapped in
+    // parentheses.
     ($($arg:tt)*) => ({
         use colored::Colorize;
 
@@ -150,14 +151,23 @@ macro_rules! important {
     });
 }
 
-// These messages will not be displayed in the console, but only saved
-// to a file in a non-distracting way. They can therefore be used much
-// more frequently, possibly allowing for better debugging.
+// These messages will only be displayed in the console when the program
+// is running in `debug` mode, as they may be useful while developing
+// the project, and will simply be saved to the log file in a
+// non-distracting way when running the `release` version.
 #[macro_export]
 macro_rules! hidden {
     // As expected, this macro does not include parentheses, as it
     // doesn't include import statements.
     ($($arg:tt)*) => {
+        #[cfg(debug_assertions)]
+        {
+            use colored::Colorize;
+
+            let msg = std::format_args!($($arg)*).to_string();
+            crate::log!(msg.black().truecolor(255, 165, 0));
+        }
+
         crate::file!("[HIDDEN] {}", std::format_args!($($arg)*));
     };
 }
