@@ -424,8 +424,7 @@ pub struct Settings {
     // the URL to a product's variant, so the only unique link to each
     // variant is the Add To Cart one (which is therefore always
     // included).
-    // pub atc: Option<bool>,
-
+    /* pub atc: Option<bool>, */
     // Although I was planning to include the option to select whether
     // to include the item price or not, I decided to "strip users of
     // this power" as I couldn't figure out a way to make the embeds
@@ -533,7 +532,7 @@ pub struct Channel {
     // to identically named channels, however the `name` is only used
     // for logging and debugging purposes, and the ID wasn't ever used,
     // so it was removed.
-    // pub id: u64,
+    /* pub id: u64, */
     pub url: String,
     #[serde(default)]
     pub settings: Alt<Settings>,
@@ -561,16 +560,7 @@ pub struct ChannelHM {
     // would be used instead of the key to it as the channel name,
     // however I decided against it. Users are still allowed to include
     // they field if they choose to, but its value will be ignored.
-
-    // // While this alternative struct could be removed entirely if the
-    // // `name` field were made optional in the original version, as it is
-    // // here, I decided to require it instead, so that debugging (and
-    // // configuring the monitor) doesn't become ridiculously hard.
-
-    // // In this struct, users all allowed to include a `name` field in
-    // // the struct contained by a `HashMap` if they want to, bypassing
-    // // the limitation cause by the type not allowing duplicate keys.
-    // pub name: Option<String>,
+    /* pub name: Option<String>, */
     pub url: String,
     #[serde(default)]
     pub settings: Alt<Settings>,
@@ -668,7 +658,7 @@ impl IntoIterator for VecMap<Event, Event> {
         if let VecMap::Vec(events) = self {
             events.into_iter()
         } else if let VecMap::Map(eventhms) = self {
-            // events.values().collect::<Vec<Event>>().into_iter()
+            /* events.values().collect::<Vec<Event>>().into_iter() */
 
             let mut events = Vec::with_capacity(eventhms.len());
 

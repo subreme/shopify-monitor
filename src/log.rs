@@ -26,11 +26,6 @@ macro_rules! log {
 // This macro also shouldn't be called outside this file, as it's
 // implemented in the other macros to save logs to a file.
 #[macro_export]
-/*
-// It should only save logs if it isn't called from during tests, as
-// those logs would not be useful and could be confusing.
-#[cfg(not(test))]
-*/
 macro_rules! file {
     // While they weren't included for `log!()`, the parentheses around
     // the curly brackets are necessary in this macro as the `Write`
@@ -40,33 +35,28 @@ macro_rules! file {
     // trait was already declared, it would be imported twice, causing
     // the code not to compile.
     ($($arg:tt)*) => ({
-        // Traits must be explicitly imported using `use`.
-        use std::io::Write;
+        // It should only save logs if it isn't called from during tests, as
+        // those logs would not be useful and could be confusing.
+        #[cfg(not(test))] {
+            // Traits must be explicitly imported using `use`.
+            use std::io::Write;
 
-        if let Ok(mut file) = std::fs::OpenOptions::new()
-            .write(true)
-            .create(true)
-            .append(true)
-            .open("shopify-monitor.log")
-        {
-            let _ = std::write!(
-                file,
-                "[{}] {}\n",
-                chrono::Local::now().format("%F %T%.3f"),
-                std::format_args!($($arg)*)
-            );
+            if let Ok(mut file) = std::fs::OpenOptions::new()
+                .write(true)
+                .create(true)
+                .append(true)
+                .open("shopify-monitor.log")
+            {
+                let _ = std::write!(
+                    file,
+                    "[{}] {}\n",
+                    chrono::Local::now().format("%F %T%.3f"),
+                    std::format_args!($($arg)*)
+                );
+            }
         }
     });
 }
-
-/*
-// While a test is running, it shouldn't do anything.
-#[macro_export]
-#[cfg(test)]
-macro_rules! file {
-    ($($arg:tt)*) => {};
-}
-*/
 
 // The other macros take a string literal and some optional parameters,
 // allowing them to be called in the same way as `println!()`. Its
@@ -165,7 +155,15 @@ macro_rules! hidden {
             use colored::Colorize;
 
             let msg = std::format_args!($($arg)*).to_string();
-            crate::log!(msg.black().truecolor(255, 165, 0));
+
+            // While the program originally used a custom orange
+            // (#FFAA00) as the color isn't "built-in" to the terminal,
+            // it was switched to purple so that it can be automatically
+            // adjusted to be visible regardless of the platform the
+            // monitor is run on.
+            /* crate::log!(msg.truecolor(255, 170, 0)); */
+
+            crate::log!(msg.purple());
         }
 
         crate::file!("[HIDDEN] {}", std::format_args!($($arg)*));

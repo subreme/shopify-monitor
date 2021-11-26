@@ -4,16 +4,16 @@
 use crate::{hidden, message::Message};
 use reqwest::Client;
 use serde::Deserialize;
-// use serde_json::to_string_pretty;
+/* use serde_json::to_string_pretty; */
 use std::sync::Arc;
 
 pub async fn send(url: String, msg: Arc<Message>) -> Status {
-    // hidden!("`send()` started!");
+    /* hidden!("`send()` started!"); */
 
     // You'd be surprised to hear how many times I uncommented this line
     // and pasted its output to https://discohook.com to figure out what
     // was wrong.
-    // println!("{}", to_string_pretty(&*msg).unwrap());
+    /* hidden!("{}", to_string_pretty(&*msg).unwrap()); */
 
     let client = Client::new();
     let req = client.post(url.clone()).json(&*msg).send().await;

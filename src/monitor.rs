@@ -44,7 +44,7 @@ pub async fn run(stores: Vec<Store>) {
                 // `/products.json`, so it has to be added to the
                 // website's URL to get the link to it.
                 let req = client.get(
-                    // format!("{}/products.json?limit=100",
+                    /* format!("{}/products.json?limit=100", */
                     format!("{}/products.json",
                     &store.url.clone().trim_end_matches('/')
                 ))
@@ -65,20 +65,11 @@ pub async fn run(stores: Vec<Store>) {
                     .header("sec-fetch-dest", "document")
                     .header("accept-language", "en-US,en;q=0.9")
 
-                    // .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9")
-                    // .header("accept-language", "en-US,en;q=0.9")
-                    // .header("sec-fetch-dest", "document")
-                    // .header("sec-fetch-mode", "navigate")
-                    // .header("sec-fetch-site", "none")
-                    // .header("sec-fetch-user", "?1")
-                    // .header("sec-gpc", "1")
-                    // .header("upgrade-insecure-requests", "1")
-
                     .send()
                     .await;
 
                 if let Ok(res) = req {
-                    // hidden!("Fetched {}! Status: {}!", res.url(), res.status());
+                    /* hidden!("Fetched {}! Status: {}!", res.url(), res.status()); */
 
                     if res.status() == 200 {
                         // In this case, a webhook saying the password
@@ -190,7 +181,7 @@ pub async fn run(stores: Vec<Store>) {
                                                 )
                                             )
                                         {
-                                            // hidden!("Product {} Updated At: {}", curr.id, curr.updated_at);
+                                            /* hidden!("Product {} Updated At: {}", curr.id, curr.updated_at); */
 
                                             hidden!("{}/product/{} restocked!", store.url, curr.id);
                                             success!("{}: `{}` restocked!", store.name, curr.title);
@@ -233,11 +224,11 @@ pub async fn run(stores: Vec<Store>) {
                                                         store_logo: store.logo.clone()
                                                     }));
 
-                                                    // hidden!("Pushed a webhook for product {}!", curr.id);
+                                                    /* hidden!("Pushed a webhook for product {}!", curr.id); */
                                                 }
                                             }
 
-                                            // hidden!("Sending webhooks for `{}`!", curr.id);
+                                            /* hidden!("Sending webhooks for `{}`!", curr.id); */
 
                                             let length = webhooks.len();
 
@@ -388,30 +379,6 @@ pub async fn run(stores: Vec<Store>) {
     join_all(tasks).await;
 }
 
-// This function was scrapped s it raised several issues.
-// // I initially wrote this function because the compiler wouldn't allow me to
-// // return a value to the `default!()` macro, instead of for the whole
-// // function, as setting values with conditionals becomes "weirder"
-// // inside nested `if` statements. I changed it not to `.await` the
-// // webhook tasks as that required the function to be asynchronous, and
-// // the compiler warned that moving Futures isn't thread-safe.
-// async fn log_webhooks(length: usize) {
-//     // The purpose of this conditional statement is to allow for the
-//     // use of the correct form of a noun in a log message.
-//     let s: String = if length == 1 {
-//         // // I'm using `\0`, a null character, instead of an empty
-//         // // character as the latter doesn't exist.
-//         // // https://stackoverflow.com/questions/3670505/why-is-there-no-char-empty-like-string-empty
-//         // '\0'
-//         "".into()
-//     } else {
-//         // 's'
-//         "s".into()
-//     };
-
-//     default!("Sending {} webhook{}...", length, s);
-// }
-
 pub fn minimal_products(current_products: Arc<Vec<Product>>) -> Option<Vec<MinimalProduct>> {
     Some({
         let mut products = vec![];
@@ -421,7 +388,7 @@ pub fn minimal_products(current_products: Arc<Vec<Product>>) -> Option<Vec<Minim
                 variants.push(MinimalVariant {
                     id: variant.id,
                     available: variant.available,
-                    // updated_at: variant.updated_at.clone(),
+                    /* updated_at: variant.updated_at.clone(), */
                 });
             }
             products.push(MinimalProduct {
@@ -512,41 +479,18 @@ pub fn available_product(
         "?".into()
     };
 
-    // let image = if let Some(img) = curr.images.get(0) {
-    //     Some(img.src.clone())
-    // } else {
-    //     None
-    // };
+    /*
+    let image = if let Some(img) = curr.images.get(0) {
+        Some(img.src.clone())
+    } else {
+        None
+    };
+    */
 
     let image = curr.images.get(0).map(|img| img.src.clone());
 
     for variant in curr.variants.iter() {
         if variant.available {
-            // These conditional statement used to check whether the
-            // variant was previously unavailable, however it was
-            // removed, as explained earlier.
-
-            // if let Some(p) = &prev {
-            //     if let Some(v) = p.iter().find(|v| v.id == variant.id) {
-            //         if !v.available {
-            //             variants.push(AvailableVariant {
-            //             name: variant.title.clone(),
-            //             id: variant.id,
-            //             });
-            //         }
-            //     } else {
-            //         variants.push(AvailableVariant {
-            //             name: variant.title.clone(),
-            //             id: variant.id,
-            //         });
-            //     }
-            // } else {
-            //     variants.push(AvailableVariant {
-            //         name: variant.title.clone(),
-            //         id: variant.id,
-            //     });
-            // }
-
             variants.push(AvailableVariant {
                 // Some websites have very weird variant names.
                 // UNDEFEATED, for example, prefixes their "sizes" with
@@ -557,14 +501,20 @@ pub fn available_product(
                 // almost all of these strange names can be "normalized".
                 name: variant
                     .title
-                    .chars() // The string is split into characters.
-                    .collect::<Vec<char>>() // The split is transformed into a vector.
-                    .iter() // The program can now iterate through each char.
+                    // The string is split into characters.
+                    .chars()
+                    // The split is transformed into a vector.
+                    .collect::<Vec<char>>()
+                    // The program can now iterate through each char.
+                    .iter()
                     // "Invalid" characters are removed.
                     .filter(|c| c.is_alphanumeric() || c.is_whitespace() || c == &&'.')
-                    .collect::<String>() // The filtered characters are collected into a string.
-                    .trim() // Leading and trailing whitespace is removed.
-                    .into(), // The returned `&str` is converted to a `String`.
+                    // The filtered characters are collected into a string.
+                    .collect::<String>()
+                    // Leading and trailing whitespace is removed.
+                    .trim()
+                    // The returned `&str` is converted to a `String`.
+                    .into(),
                 id: variant.id,
             });
         }
@@ -586,15 +536,15 @@ pub fn available_product(
 // while the two functions' role is to construct the embeds, as they
 // will differ between item and password-related notifications.
 async fn request(url: String, msg: Arc<Message>) {
-    // hidden!("`request()` started!");
+    /* hidden!("`request()` started!"); */
 
     loop {
         let status = webhook::send(url.clone(), msg.clone()).await;
 
-        // hidden!("Webhook Status: {:?}!", status);
+        /* hidden!("Webhook Status: {:?}!", status); */
 
         if status == Status::Success {
-            // hidden!("Successfully sent webhook to {}!", url);
+            /* hidden!("Successfully sent webhook to {}!", url); */
             break;
         }
 
@@ -624,7 +574,7 @@ pub struct ItemSettings {
     avatar: Option<String>,
     color: Option<u32>,
     sizes: bool,
-    // atc: Option<bool>,
+    /* atc: Option<bool>, */
     thumbnail: bool,
     image: bool,
     footer_text: Option<String>,
@@ -639,7 +589,7 @@ pub struct ItemSettings {
 // `product()` and `Product`, because the `Product` name is already used
 // by `crate::products::Product`, which is named after `products.json`.
 async fn item(settings: ItemSettings) {
-    // hidden!("`item()` started for {}!", product.name.clone());
+    /* hidden!("`item()` started for {}!", product.name.clone()); */
 
     let embed = Embed {
         title: Some(settings.product.name.clone()),
@@ -651,13 +601,15 @@ async fn item(settings: ItemSettings) {
         color: settings.color,
         fields: {
             let quantity = if settings.sizes {
-                // let len = 3 + product.variants.len();
+                /*
+                let len = 3 + product.variants.len();
 
-                // if len % 3 == 2 {
-                //     len + 4
-                // }
+                if len % 3 == 2 {
+                  len + 4
+                }
 
-                // len + 3
+                len + 3
+                */
 
                 // Since the checks for the number of variants (above
                 // this comment) were removed, the number of fields
@@ -698,7 +650,7 @@ async fn item(settings: ItemSettings) {
                 value: settings.product.price.clone(),
             });
 
-            // hidden!("{} has {} updated variants!", settings.product.name, settings.product.variants.len());
+            /* hidden!("{} has {} updated variants!", settings.product.name, settings.product.variants.len()); */
 
             if settings.sizes {
                 for variant in (*settings.product.variants).iter() {
@@ -789,7 +741,7 @@ async fn item(settings: ItemSettings) {
         avatar_url: settings.avatar.clone(),
     });
 
-    // hidden!("Calling `request()` for {}!", product.name.clone());
+    /* hidden!("Calling `request()` for {}!", product.name.clone()); */
 
     request(settings.url, msg).await;
 }

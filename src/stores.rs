@@ -13,7 +13,7 @@ pub fn get() -> Vec<Store> {
     // out where a bug originated from. I didn't use `println!()` as the
     // example config file is so long that Visual Studio Code's terminal
     // won't display all of it if you scroll  up.
-    // hidden!("\n{:#?}", config);
+    /* hidden!("\n{:#?}", config); */
 
     // this vector, which will then be passed to the `monitor::run()`
     // function, will be filled with one `Store` struct per site listed
@@ -377,27 +377,29 @@ pub fn get() -> Vec<Store> {
 
                         // The `color()` function has been temporarily removed.
 
-                        // // A webhook's embed color can be specified in two
-                        // // places: within the `Event` itself, where it can
-                        // // be individually customized, or in the `Server`'s
-                        // // `ServerSettings`, whose value should be used if
-                        // // one isn't specified for the `Event`.
+                        /*
+                        // A webhook's embed color can be specified in two
+                        // places: within the `Event` itself, where it can
+                        // be individually customized, or in the `Server`'s
+                        // `ServerSettings`, whose value should be used if
+                        // one isn't specified for the `Event`.
 
-                        // // Creating a function that's only called once [in
-                        // // the code] and requiring so many parameters may
-                        // // seem counter-intuitive, but after wasting some
-                        // // time trying to properly assign values to the
-                        // // `color` variable from within nested `if let`
-                        // // statements (to no avail), I decided to use a
-                        // // function, always using `return`, to "calm down"
-                        // // the compiler.
-                        // let color = color(
-                        //     event.color.clone(),
-                        //     server.settings.color.clone(),
-                        //     server.name.clone(),
-                        //     channel.name.clone(),
-                        //     channel.id,
-                        // );
+                        // Creating a function that's only called once [in
+                        // the code] and requiring so many parameters may
+                        // seem counter-intuitive, but after wasting some
+                        // time trying to properly assign values to the
+                        // `color` variable from within nested `if let`
+                        // statements (to no avail), I decided to use a
+                        // function, always using `return`, to "calm down"
+                        // the compiler.
+                        let color = color(
+                            event.color.clone(),
+                            server.settings.color.clone(),
+                            server.name.clone(),
+                            channel.name.clone(),
+                            channel.id,
+                        );
+                        */
 
                         let color = parse_color(&color);
 
@@ -407,15 +409,15 @@ pub fn get() -> Vec<Store> {
                         if store.name == site.name {
                             let channel = Arc::new(Channel {
                                 name: channel.name.clone(),
-                                // id: channel.id.clone(),
+                                /* id: channel.id.clone(), */
                                 url: channel.url.clone(),
                                 settings: Settings {
                                     username: event_settings.username,
                                     avatar: event_settings.avatar,
                                     color,
                                     sizes: event_settings.sizes,
-                                    // atc: event_settings.atc,
-                                    // price: event_settings.price,
+                                    /* atc: event_settings.atc, */
+                                    /* price: event_settings.price, */
                                     thumbnail: event_settings.thumbnail,
                                     image: event_settings.image,
                                     footer_text: event_settings.footer_text,
@@ -425,25 +427,6 @@ pub fn get() -> Vec<Store> {
                                 },
                             });
 
-                            // This is no longer the case, as default
-                            // values were removed.
-                            // // There are only three possible values for
-                            // // `restock`, `password_up`, and
-                            // // `password_down` in an `Event` struct, as
-                            // // they are optional and their type is
-                            // // `Option<bool>`:
-                            // // - Some(true)
-                            // // - Some(false)
-                            // // - None
-
-                            // // Since `restock` has a default value
-                            // // of`true`, this event should be included
-                            // // if its value is either `Some(true)` or
-                            // // `None`, two of the three options. This
-                            // // check can therefore be more concisely
-                            // // made by verifying that its value is NOT
-                            // // `Some(false)`, the third kind.
-
                             // It is then added to the list (`Vec`) of
                             // channels that will receive a webhook
                             // notifying the occurrence of an event.
@@ -452,10 +435,6 @@ pub fn get() -> Vec<Store> {
                                 restock.push(channel.clone());
                             }
 
-                            // This is also no longer the case.
-                            // // The other two event types default to
-                            // // false, therefore the program only has to
-                            // // check if their value is `Some(true)`.
                             if event.password_up == Some(true) {
                                 password_up.push(channel.clone());
                             }
@@ -485,7 +464,7 @@ pub fn get() -> Vec<Store> {
         }
     }
 
-    // hidden!("\n{:#?}", stores);
+    /* hidden!("\n{:#?}", stores); */
 
     stores
 }
@@ -510,12 +489,6 @@ fn parse_color(color: &Option<String>) -> Option<u32> {
                 0x607d8b
             }
 
-            // The program will return `None` anyway if the code is
-            // invalid.
-            // // These are meant to help if someone uses this setting
-            // // incorrectly (although, wouldn't that technically make it
-            // // proper usage? :brain:)
-            // // "null" | "none" | "no" => return None,
             _ => {
                 if let Ok(val) = u32::from_str_radix(code.trim_start_matches('#'), 16) {
                     if val <= 0xFFFFFF {
@@ -533,74 +506,76 @@ fn parse_color(color: &Option<String>) -> Option<u32> {
     None
 }
 
-// This function has been temporarily removed due to the introduction of
-// `Alt<T>`, as it requires changes. It will most likely be updated and
-// "added back" in the future.
+// These two functions have been temporarily removed due to the
+// introduction of `Alt<T>`, as they need to be updated. They will most
+// likely be fixed and "added back" in the future.
 
-// // As explained above, this code was placed in a single-use function to
-// // avoid bugs, and to allow for the process to be tested.
-// pub fn color(
-//     event_color: Option<String>,
-//     server_color: Option<String>,
-//     server_name: String,
-//     channel_name: Option<String>,
-//     channel_id: u64,
-// ) -> Option<u32> {
-//     if let Some(code) = event_color {
-//         let code = code.trim();
+/*
+// As explained above, this code was placed in a single-use function to
+// avoid bugs, and to allow for the process to be tested.
+pub fn color(
+    event_color: Option<String>,
+    server_color: Option<String>,
+    server_name: String,
+    channel_name: Option<String>,
+    channel_id: u64,
+) -> Option<u32> {
+    if let Some(code) = event_color {
+        let code = code.trim();
 
-//         if code.is_empty() {
-//             return None;
-//         }
+        if code.is_empty() {
+            return None;
+        }
 
-//         if code.to_lowercase() == *"server" {
-//             return color_server(server_color, server_name);
-//         }
+        if code.to_lowercase() == *"server" {
+            return color_server(server_color, server_name);
+        }
 
-//         if let Ok(val) = u32::from_str_radix(code.trim_start_matches('#'), 16) {
-//             if val <= 0xFFFFFF {
-//                 return Some(val);
-//             }
-//         }
+        if let Ok(val) = u32::from_str_radix(code.trim_start_matches('#'), 16) {
+            if val <= 0xFFFFFF {
+                return Some(val);
+            }
+        }
 
-//         // This part will run if the event's color code
-//         // was invalid.
-//         hidden!(
-//             "Invalid Color Code ({}) in {}'s {} channel!",
-//             code,
-//             server_name,
-//             {
-//                 if let Some(name) = channel_name {
-//                     format!("{} ({})", name, channel_id)
-//                 } else {
-//                     format!("{}", channel_id)
-//                 }
-//             }
-//         );
-//         hidden!("Trying {}'s backup color...", server_name);
+        // This part will run if the event's color code
+        // was invalid.
+        hidden!(
+            "Invalid Color Code ({}) in {}'s {} channel!",
+            code,
+            server_name,
+            {
+                if let Some(name) = channel_name {
+                    format!("{} ({})", name, channel_id)
+                } else {
+                    format!("{}", channel_id)
+                }
+            }
+        );
+        hidden!("Trying {}'s backup color...", server_name);
 
-//         color_server(server_color, server_name)
+        color_server(server_color, server_name)
 
-//     // If a color isn't provided, the server's one should be used.
-//     } else {
-//         color_server(server_color, server_name)
-//     }
-// }
+    // If a color isn't provided, the server's one should be used.
+    } else {
+        color_server(server_color, server_name)
+    }
+}
 
-// // This function is used to replace repetitive segments of the `color()`
-// // function above.
-// fn color_server(server_color: Option<String>, server_name: String) -> Option<u32> {
-//     if let Some(code) = server_color {
-//         if let Ok(val) = u32::from_str_radix(code.trim_start_matches('#'), 16) {
-//             Some(val)
-//         } else {
-//             hidden!("Invalid Color Code ({}) in {}!", code, server_name);
-//             None
-//         }
-//     } else {
-//         None
-//     }
-// }
+// This function is used to replace repetitive segments of the `color()`
+// function above.
+fn color_server(server_color: Option<String>, server_name: String) -> Option<u32> {
+    if let Some(code) = server_color {
+        if let Ok(val) = u32::from_str_radix(code.trim_start_matches('#'), 16) {
+            Some(val)
+        } else {
+            hidden!("Invalid Color Code ({}) in {}!", code, server_name);
+            None
+        }
+    } else {
+        None
+    }
+}
+*/
 
 #[derive(Debug)]
 pub struct Store {
@@ -619,11 +594,11 @@ pub struct Store {
 #[derive(Debug)]
 pub struct Channel {
     pub name: String,
-    // pub id: u64,
+    /* pub id: u64, */
     pub url: String,
-    // pub include: Option<Vec<String>>,
-    // pub exclude: Option<Vec<String>>,
-    // pub proxies: Option<Vec<String>>,
+    /* pub include: Option<Vec<String>>, */
+    /* pub exclude: Option<Vec<String>>, */
+    /* pub proxies: Option<Vec<String>>, */
     pub settings: Settings,
 }
 
@@ -633,8 +608,8 @@ pub struct Settings {
     pub avatar: Option<String>,
     pub color: Option<u32>,
     pub sizes: bool,
-    // pub atc: Option<bool>,
-    // pub price: Option<bool>,
+    /* pub atc: Option<bool>, */
+    /* pub price: Option<bool>, */
     pub thumbnail: bool,
     pub image: bool,
     pub footer_text: Option<String>,
