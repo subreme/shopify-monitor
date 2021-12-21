@@ -182,6 +182,7 @@ Let's start by looking at a complete Config Example:
         "footer_text": "subreme/shopify-monitor",
         "footer_image": "https://avatars.githubusercontent.com/u/71085002",
         "timestamp": true,
+        "minimum": 0,
         "keywords": null
       },
       "channels": [
@@ -219,11 +220,13 @@ Let's start by looking at a complete Config Example:
 ```
 
 *Note: some values in this purposely "complete" example had values of
-`false`. This is completely unnecessary, as every
+`false` or `0`. This is completely unnecessary, as every
 [boolean](https://en.wikipedia.org/wiki/Boolean) value in the config
 file (with the exception of `combine`, which will be explained later)
-defaults to `false`, so that you only have to include the toggles you
-want, without having to worry about disabling features you don't want.*
+defaults to `false` and every
+[integer](https://en.wikipedia.org/wiki/Integer) one defaults to 0, so
+that you only have to include the toggles you want, without having to
+worry about disabling features you don't want.*
 
 This might seem overwhelming, as it was designed to fit in necessary
 values so that it the format will *[hopefully]* work in future versions
@@ -348,6 +351,7 @@ example:
       "footer_text": "subreme/shopify-monitor",
       "footer_image": "https://avatars.githubusercontent.com/u/71085002",
       "timestamp": true,
+      "minimum": 0,
       "keywords": null
     },
     "channels": [
@@ -538,6 +542,9 @@ Every settings object contains the following fields:
   footer, however this should be tested along with your footer message
   on [Discohook](https://discohook.com), as in some cases it could look
   unpleasant.
+- *`minimum`*: if a value is set, webhooks will only be sent out if the
+  number of variants available for a restocked product is greater than
+  or equal to it.
 - *`keywords`*: when implemented in a future version of the monitor,
   you'll be allowed to select keywords here, so that only products that
   match the specified cases will have webhooks sent.
@@ -573,6 +580,7 @@ the following snippet:
   "footer_text": null,
   "footer_image": null,
   "timestamp": null,
+  "minimum": null,
   "keywords": null
 }
 ```
