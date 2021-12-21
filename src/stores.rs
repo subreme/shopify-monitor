@@ -5,6 +5,7 @@
 
 use crate::{alternative::Alternative as Alt, config, default, hidden, warning};
 use std::sync::Arc;
+use tokio::sync::RwLock;
 
 pub fn get() -> Vec<Store> {
     let config = config::read();
@@ -15,10 +16,14 @@ pub fn get() -> Vec<Store> {
     // won't display all of it if you scroll  up.
     /* hidden!("\n{:#?}", config); */
 
-    // this vector, which will then be passed to the `monitor::run()`
+    // This vector, which will then be passed to the `monitor::run()`
     // function, will be filled with one `Store` struct per site listed
     // in `config.json`, along with every event the user has selected.
     let mut stores: Vec<Store> = vec![];
+
+    // This `Vec<>` will store all invalid webhook URLs so that the
+    // program won't warn the user about them more than once.
+    let mut invalid: Vec<String> = vec![];
 
     for site in config.sites {
         // A mutable vector is created for each event type
@@ -133,7 +138,7 @@ pub fn get() -> Vec<Store> {
 
             if let Alt::Some(settings) = &server.settings {
                 // Although in the example in `config.rs` I used `.is_some()`
-                // and `.unwrap()`, i know what those methods contain, as I
+                // and `.unwrap()`, I know what those methods contain, as I
                 // wrote them, and using `if let` uses fewer steps.
                 if let Alt::Some(value) = &settings.username {
                     server_settings.username = Some(value.into());
@@ -175,275 +180,283 @@ pub fn get() -> Vec<Store> {
             }
 
             for channel in server.channels {
-                let mut channel_settings = server_settings.clone();
-                let mut color = color.clone();
-
-                if let Alt::Some(settings) = &channel.settings {
-                    if let Alt::Some(value) = &settings.username {
-                        channel_settings.username = Some(value.into());
-                    } else if settings.username.is_null() {
-                        channel_settings.username = None;
-                    }
-
-                    if let Alt::Some(value) = &settings.avatar {
-                        channel_settings.avatar = Some(value.into());
-                    } else if settings.avatar.is_null() {
-                        channel_settings.avatar = None;
-                    }
-
-                    color = settings.color.clone().into();
-
-                    if let Alt::Some(value) = settings.sizes {
-                        channel_settings.sizes = value;
-                    } else if settings.sizes.is_null() {
-                        channel_settings.sizes = false;
-                    }
-
-                    if let Alt::Some(value) = settings.thumbnail {
-                        channel_settings.thumbnail = value;
-                    } else if settings.thumbnail.is_null() {
-                        channel_settings.thumbnail = false;
-                    }
-
-                    if let Alt::Some(value) = settings.image {
-                        channel_settings.image = value;
-                    } else if settings.image.is_null() {
-                        channel_settings.image = false;
-                    }
-
-                    if let Alt::Some(value) = &settings.footer_text {
-                        channel_settings.footer_text = Some(value.into());
-                    } else if settings.footer_text.is_null() {
-                        channel_settings.footer_text = None;
-                    }
-
-                    if let Alt::Some(value) = &settings.footer_image {
-                        channel_settings.footer_image = Some(value.into());
-                    } else if settings.footer_image.is_null() {
-                        channel_settings.footer_image = None;
-                    }
-
-                    if let Alt::Some(value) = settings.timestamp {
-                        channel_settings.timestamp = value;
-                    } else if settings.timestamp.is_null() {
-                        channel_settings.timestamp = false;
-                    }
-
-                    if let Alt::Some(value) = settings.minimum {
-                        channel_settings.minimum = value;
-                    } else if settings.minimum.is_null() {
-                        channel_settings.minimum = 0;
-                    }
-                } else if channel.settings.is_null() {
-                    channel_settings = Settings::new();
-                }
-
-                // Just to clarify, in this context `site` refers to the
-                // website being monitored, as the program iterates
-                // through each one and checks if it's referenced, as a
-                // `store`, within a channel.
-                for store in channel.sites.clone() {
-                    let mut store_settings = channel_settings.clone();
+                if channel.url.contains("https://discord.com/api/webhooks/") {
+                    let mut channel_settings = server_settings.clone();
                     let mut color = color.clone();
 
-                    if let Alt::Some(settings) = &store.settings {
+                    if let Alt::Some(settings) = &channel.settings {
                         if let Alt::Some(value) = &settings.username {
-                            store_settings.username = Some(value.into());
+                            channel_settings.username = Some(value.into());
                         } else if settings.username.is_null() {
-                            store_settings.username = None;
+                            channel_settings.username = None;
                         }
 
                         if let Alt::Some(value) = &settings.avatar {
-                            store_settings.avatar = Some(value.into());
+                            channel_settings.avatar = Some(value.into());
                         } else if settings.avatar.is_null() {
-                            store_settings.avatar = None;
+                            channel_settings.avatar = None;
                         }
 
                         color = settings.color.clone().into();
 
                         if let Alt::Some(value) = settings.sizes {
-                            store_settings.sizes = value;
+                            channel_settings.sizes = value;
                         } else if settings.sizes.is_null() {
-                            store_settings.sizes = false;
+                            channel_settings.sizes = false;
                         }
 
                         if let Alt::Some(value) = settings.thumbnail {
-                            store_settings.thumbnail = value;
+                            channel_settings.thumbnail = value;
                         } else if settings.thumbnail.is_null() {
-                            store_settings.thumbnail = false;
+                            channel_settings.thumbnail = false;
                         }
 
                         if let Alt::Some(value) = settings.image {
-                            store_settings.image = value;
+                            channel_settings.image = value;
                         } else if settings.image.is_null() {
-                            store_settings.image = false;
+                            channel_settings.image = false;
                         }
 
                         if let Alt::Some(value) = &settings.footer_text {
-                            store_settings.footer_text = Some(value.into());
+                            channel_settings.footer_text = Some(value.into());
                         } else if settings.footer_text.is_null() {
-                            store_settings.footer_text = None;
+                            channel_settings.footer_text = None;
                         }
 
                         if let Alt::Some(value) = &settings.footer_image {
-                            store_settings.footer_image = Some(value.into());
+                            channel_settings.footer_image = Some(value.into());
                         } else if settings.footer_image.is_null() {
-                            store_settings.footer_image = None;
+                            channel_settings.footer_image = None;
                         }
 
                         if let Alt::Some(value) = settings.timestamp {
-                            store_settings.timestamp = value;
+                            channel_settings.timestamp = value;
                         } else if settings.timestamp.is_null() {
-                            store_settings.timestamp = false;
+                            channel_settings.timestamp = false;
                         }
 
                         if let Alt::Some(value) = settings.minimum {
-                            store_settings.minimum = value;
+                            channel_settings.minimum = value;
                         } else if settings.minimum.is_null() {
-                            store_settings.minimum = 0;
+                            channel_settings.minimum = 0;
                         }
-                    } else if store.settings.is_null() {
-                        store_settings = Settings::new();
+                    } else if channel.settings.is_null() {
+                        channel_settings = Settings::new();
                     }
 
-                    // Since every event is being checked and the
-                    // channels are then saved in a `Vec`, the program
-                    // will include duplicate channels if a user
-                    // accidentally improperly configures the monitor.
-                    // In the future, this could be prevented by using
-                    // `HashMap`s with webhook URLs as keys, instead.
-                    for event in store.events.clone() {
-                        let mut event_settings = store_settings.clone();
+                    // Just to clarify, in this context `site` refers to the
+                    // website being monitored, as the program iterates
+                    // through each one and checks if it's referenced, as a
+                    // `store`, within a channel.
+                    for store in channel.sites.clone() {
+                        let mut store_settings = channel_settings.clone();
+                        let mut color = color.clone();
 
-                        if let Alt::Some(settings) = &event.settings {
+                        if let Alt::Some(settings) = &store.settings {
                             if let Alt::Some(value) = &settings.username {
-                                event_settings.username = Some(value.into());
+                                store_settings.username = Some(value.into());
                             } else if settings.username.is_null() {
-                                event_settings.username = None;
+                                store_settings.username = None;
                             }
 
                             if let Alt::Some(value) = &settings.avatar {
-                                event_settings.avatar = Some(value.into());
+                                store_settings.avatar = Some(value.into());
                             } else if settings.avatar.is_null() {
-                                event_settings.avatar = None;
+                                store_settings.avatar = None;
                             }
 
                             color = settings.color.clone().into();
 
                             if let Alt::Some(value) = settings.sizes {
-                                event_settings.sizes = value;
+                                store_settings.sizes = value;
                             } else if settings.sizes.is_null() {
-                                event_settings.sizes = false;
+                                store_settings.sizes = false;
                             }
 
                             if let Alt::Some(value) = settings.thumbnail {
-                                event_settings.thumbnail = value;
+                                store_settings.thumbnail = value;
                             } else if settings.thumbnail.is_null() {
-                                event_settings.thumbnail = false;
+                                store_settings.thumbnail = false;
                             }
 
                             if let Alt::Some(value) = settings.image {
-                                event_settings.image = value;
+                                store_settings.image = value;
                             } else if settings.image.is_null() {
-                                event_settings.image = false;
+                                store_settings.image = false;
                             }
 
                             if let Alt::Some(value) = &settings.footer_text {
-                                event_settings.footer_text = Some(value.into());
+                                store_settings.footer_text = Some(value.into());
                             } else if settings.footer_text.is_null() {
-                                event_settings.footer_text = None;
+                                store_settings.footer_text = None;
                             }
 
                             if let Alt::Some(value) = &settings.footer_image {
-                                event_settings.footer_image = Some(value.into());
+                                store_settings.footer_image = Some(value.into());
                             } else if settings.footer_image.is_null() {
-                                event_settings.footer_image = None;
+                                store_settings.footer_image = None;
                             }
 
                             if let Alt::Some(value) = settings.timestamp {
-                                event_settings.timestamp = value;
+                                store_settings.timestamp = value;
                             } else if settings.timestamp.is_null() {
-                                event_settings.timestamp = false;
+                                store_settings.timestamp = false;
                             }
 
                             if let Alt::Some(value) = settings.minimum {
-                                event_settings.minimum = value;
+                                store_settings.minimum = value;
                             } else if settings.minimum.is_null() {
-                                event_settings.minimum = 0;
+                                store_settings.minimum = 0;
                             }
                         } else if store.settings.is_null() {
-                            event_settings = Settings::new();
+                            store_settings = Settings::new();
                         }
 
-                        // The `color()` function has been temporarily removed.
+                        // Since every event is being checked and the
+                        // channels are then saved in a `Vec`, the program
+                        // will include duplicate channels if a user
+                        // accidentally improperly configures the monitor.
+                        // In the future, this could be prevented by using
+                        // `HashMap`s with webhook URLs as keys, instead.
+                        for event in store.events.clone() {
+                            let mut event_settings = store_settings.clone();
 
-                        /*
-                        // A webhook's embed color can be specified in two
-                        // places: within the `Event` itself, where it can
-                        // be individually customized, or in the `Server`'s
-                        // `ServerSettings`, whose value should be used if
-                        // one isn't specified for the `Event`.
+                            if let Alt::Some(settings) = &event.settings {
+                                if let Alt::Some(value) = &settings.username {
+                                    event_settings.username = Some(value.into());
+                                } else if settings.username.is_null() {
+                                    event_settings.username = None;
+                                }
 
-                        // Creating a function that's only called once [in
-                        // the code] and requiring so many parameters may
-                        // seem counter-intuitive, but after wasting some
-                        // time trying to properly assign values to the
-                        // `color` variable from within nested `if let`
-                        // statements (to no avail), I decided to use a
-                        // function, always using `return`, to "calm down"
-                        // the compiler.
-                        let color = color(
-                            event.color.clone(),
-                            server.settings.color.clone(),
-                            server.name.clone(),
-                            channel.name.clone(),
-                            channel.id,
-                        );
-                        */
+                                if let Alt::Some(value) = &settings.avatar {
+                                    event_settings.avatar = Some(value.into());
+                                } else if settings.avatar.is_null() {
+                                    event_settings.avatar = None;
+                                }
 
-                        let color = parse_color(&color);
+                                color = settings.color.clone().into();
 
-                        // If the site being iterated through is
-                        // mentioned in a a channel (one of all the ones
-                        // also being iterated through), its values are collected.
-                        if store.name == site.name {
-                            let channel = Arc::new(Channel {
-                                name: channel.name.clone(),
-                                /* id: channel.id.clone(), */
-                                url: channel.url.clone(),
-                                settings: Settings {
-                                    username: event_settings.username,
-                                    avatar: event_settings.avatar,
-                                    color,
-                                    sizes: event_settings.sizes,
-                                    /* atc: event_settings.atc, */
-                                    /* price: event_settings.price, */
-                                    thumbnail: event_settings.thumbnail,
-                                    image: event_settings.image,
-                                    footer_text: event_settings.footer_text,
-                                    footer_image: event_settings.footer_image,
-                                    timestamp: event_settings.timestamp,
-                                    minimum: event_settings.minimum,
-                                },
-                            });
+                                if let Alt::Some(value) = settings.sizes {
+                                    event_settings.sizes = value;
+                                } else if settings.sizes.is_null() {
+                                    event_settings.sizes = false;
+                                }
 
-                            // It is then added to the list (`Vec`) of
-                            // channels that will receive a webhook
-                            // notifying the occurrence of an event.
+                                if let Alt::Some(value) = settings.thumbnail {
+                                    event_settings.thumbnail = value;
+                                } else if settings.thumbnail.is_null() {
+                                    event_settings.thumbnail = false;
+                                }
 
-                            if event.restock == Some(true) {
-                                restock.push(channel.clone());
+                                if let Alt::Some(value) = settings.image {
+                                    event_settings.image = value;
+                                } else if settings.image.is_null() {
+                                    event_settings.image = false;
+                                }
+
+                                if let Alt::Some(value) = &settings.footer_text {
+                                    event_settings.footer_text = Some(value.into());
+                                } else if settings.footer_text.is_null() {
+                                    event_settings.footer_text = None;
+                                }
+
+                                if let Alt::Some(value) = &settings.footer_image {
+                                    event_settings.footer_image = Some(value.into());
+                                } else if settings.footer_image.is_null() {
+                                    event_settings.footer_image = None;
+                                }
+
+                                if let Alt::Some(value) = settings.timestamp {
+                                    event_settings.timestamp = value;
+                                } else if settings.timestamp.is_null() {
+                                    event_settings.timestamp = false;
+                                }
+
+                                if let Alt::Some(value) = settings.minimum {
+                                    event_settings.minimum = value;
+                                } else if settings.minimum.is_null() {
+                                    event_settings.minimum = 0;
+                                }
+                            } else if store.settings.is_null() {
+                                event_settings = Settings::new();
                             }
 
-                            if event.password_up == Some(true) {
-                                password_up.push(channel.clone());
-                            }
+                            // The `color()` function has been temporarily removed.
 
-                            if event.password_down == Some(true) {
-                                password_down.push(channel.clone());
+                            /*
+                            // A webhook's embed color can be specified in two
+                            // places: within the `Event` itself, where it can
+                            // be individually customized, or in the `Server`'s
+                            // `ServerSettings`, whose value should be used if
+                            // one isn't specified for the `Event`.
+
+                            // Creating a function that's only called once [in
+                            // the code] and requiring so many parameters may
+                            // seem counter-intuitive, but after wasting some
+                            // time trying to properly assign values to the
+                            // `color` variable from within nested `if let`
+                            // statements (to no avail), I decided to use a
+                            // function, always using `return`, to "calm down"
+                            // the compiler.
+                            let color = color(
+                                event.color.clone(),
+                                server.settings.color.clone(),
+                                server.name.clone(),
+                                channel.name.clone(),
+                                channel.id,
+                            );
+                            */
+
+                            let color = parse_color(&color);
+
+                            // If the site being iterated through is
+                            // mentioned in a a channel (one of all the ones
+                            // also being iterated through), its values are collected.
+                            if store.name == site.name {
+                                let channel = Arc::new(Channel {
+                                    name: channel.name.clone(),
+                                    /* id: channel.id.clone(), */
+                                    url: channel.url.trim_end_matches('/').into(),
+                                    settings: Settings {
+                                        username: event_settings.username,
+                                        avatar: event_settings.avatar,
+                                        color,
+                                        sizes: event_settings.sizes,
+                                        /* atc: event_settings.atc, */
+                                        /* price: event_settings.price, */
+                                        thumbnail: event_settings.thumbnail,
+                                        image: event_settings.image,
+                                        footer_text: event_settings.footer_text,
+                                        footer_image: event_settings.footer_image,
+                                        timestamp: event_settings.timestamp,
+                                        minimum: event_settings.minimum,
+                                    },
+                                });
+
+                                // It is then added to the list (`Vec`) of
+                                // channels that will receive a webhook
+                                // notifying the occurrence of an event.
+
+                                if event.restock == Some(true) {
+                                    restock.push(channel.clone());
+                                }
+
+                                if event.password_up == Some(true) {
+                                    password_up.push(channel.clone());
+                                }
+
+                                if event.password_down == Some(true) {
+                                    // `channel` doesn't have to be
+                                    // `clone`d here as it won't be used
+                                    // again.
+                                    password_down.push(channel);
+                                }
                             }
                         }
                     }
+                } else if !invalid.contains(&channel.url) {
+                    warning!("Invalid Webhook URL: `{}`!", channel.url);
+                    invalid.push(channel.url);
                 }
             }
         }
@@ -457,9 +470,9 @@ pub fn get() -> Vec<Store> {
                 url: site.url.clone(),
                 logo,
                 delay,
-                restock: Arc::new(restock),
-                password_up: Arc::new(password_up),
-                password_down: Arc::new(password_down),
+                restock: Arc::new(RwLock::new(restock)),
+                password_up: Arc::new(RwLock::new(password_up)),
+                password_down: Arc::new(RwLock::new(password_down)),
             })
         }
     }
@@ -586,9 +599,9 @@ pub struct Store {
     // This field isn't optional, as a default value is set if one
     // wasn't configured.
     pub delay: u64,
-    pub restock: Arc<Vec<Arc<Channel>>>,
-    pub password_up: Arc<Vec<Arc<Channel>>>,
-    pub password_down: Arc<Vec<Arc<Channel>>>,
+    pub restock: Arc<RwLock<Vec<Arc<Channel>>>>,
+    pub password_up: Arc<RwLock<Vec<Arc<Channel>>>>,
+    pub password_down: Arc<RwLock<Vec<Arc<Channel>>>>,
 }
 
 #[derive(Debug)]

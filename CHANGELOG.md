@@ -12,6 +12,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `minimum` field in `Settings`, which controls the minimum number of
   available variants a product should have for a `restock` webhook to be
   sent out.
+- The ability to detect invalid webhook URLs and stop using them.
+- The process of automatically stopping the monitoring of a site if none
+  of its webhooks are working.
+- The logic to terminate the program if no stores are being monitored.
+- A self-updating [version number](src/main.rs#L43-L50) in the program's
+  start screen.
+
+### Changed
+
+- The monitor's logic to have a "background process" handle tasks that
+  would interrupt the monitor.
+- The number of fields in `products.json` that are deserialized,
+  reducing latency.
+
+### Fixed
+
+- Bug where the Status Codes to the Discord API Responses were
+  interpreted incorrectly.
+- Process that "spammed" the terminal, sending repeated warnings about
+  websites being unreachable.
 
 ## [0.1.1] - 2021-07-31
 

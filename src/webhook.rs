@@ -21,22 +21,20 @@ pub async fn send(url: String, msg: Arc<Message>) -> Status {
     if let Ok(res) = req {
         hidden!("Sent webhook to {}!, Status: {}", url, res.status());
 
-        let status = res.status().as_u16();
-
-        if status == 204 | 200 {
-            Status::Success
-        } else if status == 201 {
-            Status::Invalid
-        } else if status == 429 {
-            if let Ok(info) = res.json::<RateLimit>().await {
-                Status::RateLimit(Some(info.retry_after))
-            } else {
-                Status::RateLimit(None)
+        // I have to include the `return` keyword here as the compiler
+        // will complain if I don't (as it expects the `if let`
+        // statement after it to return too)
+        return match res.status().as_u16() {
+            200 | 204 => Status::Success,
+            201 | 404 => Status::Invalid,
+            429 => {
+                if let Ok(info) = res.json::<RateLimit>().await {
+                    Status::RateLimit(Some(info.retry_after))
+                } else {
+                    Status::RateLimit(None)
+                }
             }
-
-        // For some reason the compiler requires me to include this clause
-        } else {
-            Status::Unknown
+            _ => Status::Unknown,
         };
     } else if let Err(e) = req {
         hidden!("Error sending webhook to {}: {}", url, e);

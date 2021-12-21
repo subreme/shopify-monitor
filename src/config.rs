@@ -9,39 +9,45 @@ use std::{collections::HashMap, fs, io, process, vec::IntoIter};
 // This function is used to get the deserialized values saved in
 // `config.json` in order for the program to know what to do.
 pub fn read() -> Config {
-    // At first, the program assumes it's being run by a regular user
-    // and doesn't mention the possible existence of
-    // `config.private.json`.
+    // This code block will only run when the program is in debug mode,
+    // and won't be included in the monitor's release build, as regular
+    // users have no use for the alternative `config.private.json`.
+    #[cfg(debug_assertions)]
+    {
+        // At first, the program assumes it's being run by a regular user
+        // and doesn't mention the possible existence of
+        // `config.private.json`.
 
-    // This file is intended to be used by developers, as the repository's
-    // `.gitignore` doesn't include `config.json`. By configuring their
-    // own settings in the private file, leaving the "public" one with
-    // its example settings, they can ensure that they don't
-    // accidentally publish their webhook URLs and the integrity of the
-    // example configuration isn't compromised.
+        // This file is intended to be used by developers, as the repository's
+        // `.gitignore` doesn't include `config.json`. By configuring their
+        // own settings in the private file, leaving the "public" one with
+        // its example settings, they can ensure that they don't
+        // accidentally publish their webhook URLs and the integrity of the
+        // example configuration isn't compromised.
 
-    hidden!("Loading `config.private.json`...");
-    default!("Loading config file...");
+        hidden!("Loading `config.private.json`...");
+        default!("Loading config file...");
 
-    if let Ok(config) = fs::read_to_string("config.private.json") {
-        hidden!("Reading `private.config.json`...");
+        if let Ok(config) = fs::read_to_string("config.private.json") {
+            hidden!("Reading `private.config.json`...");
 
-        // The program only refers to the private config file as such if
-        //the directory it's in contains it.
-        default!("Reading private config file...");
+            // The program only refers to the private config file as such if
+            //the directory it's in contains it.
+            default!("Reading private config file...");
 
-        let json = serde_json::from_str(config.as_str());
+            let json = serde_json::from_str(config.as_str());
 
-        if let Ok(value) = json {
-            success!("Successfully parsed settings!");
-            return value;
-        } else if let Err(error) = json {
-            hidden!("Failed to parse `config.private.json`: {}", error);
-        }
+            if let Ok(value) = json {
+                success!("Successfully parsed settings!");
+                return value;
+            } else if let Err(error) = json {
+                hidden!("Failed to parse `config.private.json`: {}", error);
+            }
 
-        warning!("Invalid private config file!");
-        default!("Trying again with `config.json`...");
-    };
+            warning!("Invalid private config file!");
+            default!("Trying again with `config.json`...");
+        };
+    }
 
     hidden!("Loading `config.json`...");
 
@@ -134,7 +140,9 @@ fn suggest_instructions() {
     // there's enough time to read the error messages, before discarding
     // the new input and terminating the program.
     let mut input = String::new();
-    io::stdin().read_line(&mut input).unwrap();
+    io::stdin()
+        .read_line(&mut input)
+        .expect("Failed to read input.");
 
     // The function could also call `process::exit()`, as it is repeated
     // after both of its instances, however the compiler wouldn't
@@ -476,7 +484,7 @@ pub struct Keyword {
     // they can set common "shared" keywords without having to repeat
     // them in every event's settings.
 
-    // As a result, these two example are equivalent:
+    // As a result, these three example are equivalent:
 
     // // Example 1:
     // "keywords": null,

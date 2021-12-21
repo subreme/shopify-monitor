@@ -22,6 +22,7 @@ version = "1"
 features = ["full"]
 
 [dependencies]
+base64 = "0.13.0"
 chrono = "0.4"
 colored = "2"
 futures = "0.3.16"

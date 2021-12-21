@@ -1,30 +1,144 @@
 // This is where the logic for the actual monitor will be.
 
 use crate::{
-    default, hidden,
+    default, error, hidden,
     message::*,
     products::{File, Product},
     stores::Store,
     success, warning,
     webhook::{self, Status},
 };
+use base64::{encode_config, URL_SAFE};
 use chrono::prelude::*;
 use futures::future::join_all;
 use std::{sync::Arc, time::Duration};
 use tokio::{
+    sync::{
+        mpsc::{self, Sender},
+        oneshot, RwLock,
+    },
     task,
     time::{self, sleep},
 };
 
 pub async fn run(stores: Vec<Store>) {
+    // This variable will keep track of the number of stores being
+    // monitored so that the program can quit if it drops to zero.
+    let amount = stores.len();
+
+    default!("Monitoring {} stores...", amount);
+
+    // While after some testing I realized that collecting tasks in a
+    // vector and `join`ing them is not necessary for them to run, the
+    // program will quit immediately as it will not "wait for them to
+    // complete", therefore I'm keeping this. While other methods exist
+    // to avoid this, maintaining the `tasks` vector should make it
+    // simpler to have the program quit once new features are introduced.
     let mut tasks = vec![];
 
+    // This vector will list all invalid webhook links so that the
+    // program does not waste time sending requests to them. It uses a
+    // `RwLock` so that all tasks can read its contents while only one
+    // of them can edit it (adding more links) at once. In order to
+    // maximize performance, the current strategy is to check that the
+    // vector's length has not changed before each iteration of the
+    // monitoring task, and to check if the newly black-listed webhooks
+    // are part of the list the task is supposed to send to. If they
+    // are, they will be removed from said list, and the monitor will
+    // not attempt t send updates to it again. If any webhook-sending
+    // task receives an invalid status, the link will be added to the
+    // `broken_webhooks` list so that all tasks can remove it
+    // immediately.
+    let broken_webhooks = Arc::new(RwLock::new(vec![]));
+
+    // This channel will be used to allow monitoring tasks to
+    // communicate with a background task. While more functionality will
+    // be added to it in the future (such as detecting any updates to
+    // This counter will be used the config file), it currently only
+    // serves as a counter to keep track of how many stores the monitor
+    // is unable to connect to at any given time, so that if its value
+    // reaches the total number of stores, the program will know is
+    // offline. The value of its buffer is arbitrary and may be subject
+    // to change following further testing.
+    let (tx, mut rx) = mpsc::channel(amount * 5);
+
+    // This channel, on the other hand, is meant to be used only once in
+    // order to force the `run()` function to return, terminating the
+    // monitor.
+    let (quit_tx, quit_rx) = oneshot::channel();
+
+    // `amount` is re-declared here as it needs to be an `Arc<>` but it's
+    // inconvenient to have to `.read()` it in the statements between
+    // when it is first declared and here.
+    let amount = Arc::new(RwLock::new(amount));
+
+    // This code block is sectioned-off so that `amount` can be cloned
+    // without renaming it.
+    {
+        let amount = amount.clone();
+        let broken_webhooks = broken_webhooks.clone();
+
+        // This "background task" receives updates from the other tasks
+        // through a `mpsc` channel and handles them so that the monitor
+        // can run without interruptions.
+        tasks.push(task::spawn(async move {
+            let mut offline = 0;
+
+            while let Some(update) = rx.recv().await {
+                match update {
+                    // Monitor Updates
+                    Update::Monitor(MonitorUpdate::Quit, message) => {
+                        error!("{}", message);
+                        break;
+                    }
+
+                    // Site Updates
+                    Update::Site(SiteUpdate::Online, _) => {
+                        offline -= 1;
+
+                        if offline == 0 {
+                            success!("All sites are are back online!");
+                        }
+                    }
+
+                    Update::Site(SiteUpdate::Offline, _) => {
+                        offline += 1;
+
+                        if offline == *amount.read().await {
+                            error!("The program seems not to be connected to the Internet!");
+                        }
+                    }
+
+                    // Webhook Updates
+                    Update::Webhook(_, url) => {
+                        warning!("Invalid webhook: {}!", url);
+
+                        // If the webhook is invalid, it's added to this vector so
+                        // that the program will stop sending requests to it.
+                        broken_webhooks.write().await.push(url.clone());
+                    }
+
+                    #[allow(unreachable_patterns)]
+                    _ => {}
+                }
+            }
+
+            // If the loop is ended, a message will be sent through
+            // `quit_tx` and the monitor will stop.
+            quit_tx.send(()).expect("Failed to send message.");
+        }));
+    }
+
     for store in stores {
+        let broken_webhooks = broken_webhooks.clone();
+        let tx = tx.clone();
+        let amount = amount.clone();
+
         // These vectors contain all channels the monitor should send
         // webhooks to, divided by the type of events included.
         let restock = Arc::clone(&store.restock);
-        let password_up = Arc::clone(&store.password_up.clone());
-        let password_down = Arc::clone(&store.password_down.clone());
+        let password_up = Arc::clone(&store.password_up);
+        let password_down = Arc::clone(&store.password_down);
 
         tasks.push(task::spawn(async move {
             let client = reqwest::Client::new();
@@ -34,19 +148,77 @@ pub async fn run(stores: Vec<Store>) {
             let mut previous: Option<Vec<MinimalProduct>> = None;
             let mut password_page = false;
             let mut rate_limit = false;
+            let mut online = true;
+            let mut broken_prev = 0;
 
             // This will be used to return `Future`s that complete at
             // intervals as long as the `delay` specified by the user.
             let mut interval = time::interval(Duration::from_millis(store.delay));
 
-            loop {
+            // This `loop` is named so that it can be `break`ed out of
+            // from within another loop.
+            'main: loop {
+                // In this version of the monitor, when a webhook is
+                // detected to be invalid it is removed from the list of
+                // links that the program sends requests to. Checking
+                // the list takes some time, as the list has to be
+                // checked at every iteration, but skipping the process
+                // of sending unnecessary requests should make up for
+                // it. If testing shows that there is performance is
+                // negatively affected, this feature will be removed.
+
+                // The webhooks are only checked if new links have been
+                // blacklisted.
+                let broken_curr = broken_webhooks.read().await;
+
+                if broken_curr.len() != broken_prev {
+                    // Only the newly "banned" webhooks are checked.
+                    for i in broken_prev..broken_curr.len() {
+                        // Since links are never removed from the
+                        // vector, it isn't possible for the length of
+                        // `broken_webhooks` to decrease, so it's safe
+                        // to access the elements using square brackets.
+
+                        // The URL is checked instead of the channel
+                        // itself because if two user-created "channels"
+                        // were to share the same link, both should be
+                        // removed.
+                        restock
+                            .write()
+                            .await
+                            .retain(|c| c.url != broken_curr[i]);
+                        password_up
+                            .write()
+                            .await
+                            .retain(|c| c.url != broken_curr[i]);
+                        password_down
+                            .write()
+                            .await
+                            .retain(|c| c.url != broken_curr[i]);
+
+                        // If nothing is being monitored (as there
+                        // aren't any valid webhooks to send updates to)
+                        // the task is killed.
+                        if restock.read().await.is_empty() &&
+                            password_up.read().await.is_empty() &&
+                            password_down.read().await.is_empty() {
+                            break 'main;
+                        }
+                    }
+
+                    // The variable keeping track of the amount of
+                    // banned links should be updated or the program
+                    // will always check every vector for no reason.
+                    broken_prev = broken_curr.len();
+                }
+
                 // The endpoint for all Shopify store is
                 // `/products.json`, so it has to be added to the
                 // website's URL to get the link to it.
                 let req = client.get(
                     /* format!("{}/products.json?limit=100", */
                     format!("{}/products.json",
-                    &store.url.clone().trim_end_matches('/')
+                    &store.url.clone()
                 ))
 
                     // For this first version, I simply "borrowed" the "Safe
@@ -71,6 +243,12 @@ pub async fn run(stores: Vec<Store>) {
                 if let Ok(res) = req {
                     /* hidden!("Fetched {}! Status: {}!", res.url(), res.status()); */
 
+                    if !online {
+                        default!("`{}` is back online!", store.name);
+                        tx.send(Update::Site(SiteUpdate::Online, "".into())).await.expect("Failed to send update.");
+                        online = true;
+                    }
+
                     if res.status() == 200 {
                         // In this case, a webhook saying the password
                         // page is down will be sent.
@@ -80,13 +258,15 @@ pub async fn run(stores: Vec<Store>) {
                             hidden!("Password page raised on {}!", store.url);
                             success!("{}: Password Page Up!", store.name);
 
-                            let mut webhooks = vec![];
+                            // This variable keeps track of the number
+                            // of webhooks sent for each store update.
+                            let mut quantity = 0;
 
                             // The program will cycle through each
                             // channel that should be notified and send
                             // out a webhook.
-                            for channel in (*password_down).iter() {
-                                webhooks.push(password(PasswordSettings {
+                            for channel in password_down.read().await.iter() {
+                                task::spawn(password(PasswordSettings {
                                     kind: Password::Down,
                                     url: channel.url.clone(),
                                     username: channel.settings.username.clone(),
@@ -97,29 +277,30 @@ pub async fn run(stores: Vec<Store>) {
                                     timestamp: channel.settings.timestamp,
                                     store_name: store.name.clone(),
                                     store_url: store.url.clone(),
-                                    store_logo: store.logo.clone()
+                                    store_logo: store.logo.clone(),
+                                    broken_webhooks: broken_webhooks.clone(),
+                                    tx: tx.clone(),
                                 }));
+
+                                // I think that using a counter should
+                                // be faster than accessing the
+                                // `password_down` vector to check its
+                                // length, but I may be wrong.
+                                quantity += 1;
                             }
 
-                            let length = webhooks.len();
-
-                            let s = if length == 1 {
-                                // I'm using `\0`, a null character,
-                                // instead of an empty character as the
-                                // latter doesn't exist.
+                            default!(
+                                "Sending {} webhook{}...",
+                                quantity,
+                                // This conditional statement appends an
+                                // "s" to the word "webhook" if more
+                                // than one is sent. I'm using `\0`, a
+                                // null character, instead of an empty
+                                // character as the latter doesn't
+                                // exist.
                                 // https://stackoverflow.com/questions/3670505/why-is-there-no-char-empty-like-string-empty
-                                '\0'
-                            } else {
-                                's'
-                            };
-
-                            default!("Sending {} webhook{}...", length, s);
-
-                            // In a future version of the monitor, I
-                            // will probably use channels to send the
-                            // webhooks to a different task, so that I
-                            // don't have to wait for them to be sent.
-                            join_all(webhooks).await;
+                                if quantity == 1 { '\0' } else { 's' }
+                            );
                         }
 
                         if rate_limit {
@@ -173,28 +354,35 @@ pub async fn run(stores: Vec<Store>) {
                                     // the available variants used to
                                     // be unavailable), before sending a
                                     // webhook.
-                                    if let Some(prev) = previous.iter().find(|prev| prev.id == curr.id) {
-                                        if curr.updated_at != prev.updated_at &&
-                                            curr.variants.iter().any(|curr|
-                                                prev.variants.iter().any(|prev|
-                                                    prev.id == curr.id && !prev.available && curr.available
-                                                )
-                                            )
+                                    if let Some(prev) =
+                                        previous.iter().find(|prev| prev.id == curr.id)
+                                    {
+                                        if curr.updated_at != prev.updated_at
+                                            && curr.variants.iter().any(|curr| {
+                                                prev.variants.iter().any(|prev| {
+                                                    prev.id == curr.id
+                                                        && !prev.available
+                                                        && curr.available
+                                                })
+                                            })
                                         {
                                             /* hidden!("Product {} Updated At: {}", curr.id, curr.updated_at); */
 
                                             hidden!("{}/product/{} restocked!", store.url, curr.id);
                                             success!("{}: `{}` restocked!", store.name, curr.title);
 
-                                            let mut webhooks = vec![];
+                                            let mut quantity = 0;
 
                                             let ap = available_product(curr);
 
-                                            for channel in (*restock).iter() {
-                                                if curr.variants
+                                            for channel in restock.read().await.iter() {
+                                                if curr
+                                                    .variants
                                                     .iter()
                                                     .filter(|v| v.available)
-                                                    .count() >= channel.settings.minimum {
+                                                    .count()
+                                                    >= channel.settings.minimum
+                                                {
                                                     // Although it may
                                                     // not seem like it
                                                     // at first glance,
@@ -206,7 +394,7 @@ pub async fn run(stores: Vec<Store>) {
                                                     // function for each
                                                     // webhook that
                                                     // should be sent.
-                                                    webhooks.push(item(ItemSettings {
+                                                    task::spawn(item(ItemSettings {
                                                         kind: Item::Restock,
                                                         product: ap.clone(),
                                                         url: channel.url.clone(),
@@ -216,36 +404,35 @@ pub async fn run(stores: Vec<Store>) {
                                                         sizes: channel.settings.sizes,
                                                         thumbnail: channel.settings.thumbnail,
                                                         image: channel.settings.image,
-                                                        footer_text: channel.settings.footer_text.clone(),
-                                                        footer_image: channel.settings.footer_image.clone(),
+                                                        footer_text: channel
+                                                            .settings
+                                                            .footer_text
+                                                            .clone(),
+                                                        footer_image: channel
+                                                            .settings
+                                                            .footer_image
+                                                            .clone(),
                                                         timestamp: channel.settings.timestamp,
                                                         store_name: store.name.clone(),
                                                         store_url: store.url.clone(),
-                                                        store_logo: store.logo.clone()
+                                                        store_logo: store.logo.clone(),
+                                                        broken_webhooks: broken_webhooks.clone(),
+                                                        tx: tx.clone(),
                                                     }));
 
                                                     /* hidden!("Pushed a webhook for product {}!", curr.id); */
+
+                                                    quantity += 1;
                                                 }
                                             }
 
                                             /* hidden!("Sending webhooks for `{}`!", curr.id); */
 
-                                            let length = webhooks.len();
-
-                                            default!("Sending {} webhook{}...",
-                                                length,
-                                                // This appends an "s" to
-                                                // the word "webhook" if
-                                                // more than one is
-                                                // sent.
-                                                if length == 1 {
-                                                    '\0'
-                                                } else {
-                                                    's'
-                                                }
+                                            default!(
+                                                "Sending {} webhook{}...",
+                                                quantity,
+                                                if quantity == 1 { '\0' } else { 's' }
                                             );
-
-                                            join_all(webhooks).await;
                                         }
 
                                     // This code will run if a
@@ -256,12 +443,12 @@ pub async fn run(stores: Vec<Store>) {
                                         hidden!("{}/product/{} was added!", store.url, curr.id);
                                         success!("{}: `{}` was added!", store.name, curr.title);
 
-                                        let mut webhooks = vec![];
+                                        let mut quantity = 0;
 
                                         let ap = available_product(curr);
 
-                                        for channel in (*restock).iter() {
-                                            webhooks.push(item(ItemSettings{
+                                        for channel in restock.read().await.iter() {
+                                            task::spawn(item(ItemSettings {
                                                 kind: Item::New,
                                                 product: ap.clone(),
                                                 url: channel.url.clone(),
@@ -271,26 +458,24 @@ pub async fn run(stores: Vec<Store>) {
                                                 sizes: channel.settings.sizes,
                                                 thumbnail: channel.settings.thumbnail,
                                                 image: channel.settings.image,
-                                                footer_text:channel.settings.footer_text.clone(),
+                                                footer_text: channel.settings.footer_text.clone(),
                                                 footer_image: channel.settings.footer_image.clone(),
                                                 timestamp: channel.settings.timestamp,
                                                 store_name: store.name.clone(),
                                                 store_url: store.url.clone(),
-                                                store_logo: store.logo.clone()
+                                                store_logo: store.logo.clone(),
+                                                broken_webhooks: broken_webhooks.clone(),
+                                                tx: tx.clone(),
                                             }));
+
+                                            quantity += 1;
                                         }
 
-                                        let length = webhooks.len();
-
-                                        let s = if length == 1 {
-                                            '\0'
-                                        } else {
-                                            's'
-                                        };
-
-                                        default!("Sending {} webhook{}...", length, s);
-
-                                        join_all(webhooks).await;
+                                        default!(
+                                            "Sending {} webhook{}...",
+                                            quantity,
+                                            if quantity == 1 { '\0' } else { 's' }
+                                        );
                                     }
                                 }
                             }
@@ -303,7 +488,6 @@ pub async fn run(stores: Vec<Store>) {
                             // has to be updated on every cycle
                             // regardless.
                             previous = minimal_products(current_products);
-
                         } else if let Err(e) = json {
                             hidden!("Failed to parse JSON for {}: {}", store.url, e);
 
@@ -316,9 +500,7 @@ pub async fn run(stores: Vec<Store>) {
 
                         // In this case, a webhook with the restocked
                         // items will be sent.
-
                     } else if res.status() == 401 {
-
                         // In this case, a webhook saying the password
                         // page is up will be sent.
                         if !password_page {
@@ -327,13 +509,13 @@ pub async fn run(stores: Vec<Store>) {
                             hidden!("Password page raised on {}!", store.url);
                             success!("{}: Password Page Up!", store.name);
 
-                            let mut webhooks = vec![];
+                            let mut quantity = 0;
 
                             // The program will cycle through each
                             // channel that should be notified and send
                             // out a webhook.
-                            for channel in (*password_up).iter() {
-                                webhooks.push(password(PasswordSettings {
+                            for channel in password_up.read().await.iter() {
+                                task::spawn(password(PasswordSettings {
                                     kind: Password::Up,
                                     url: channel.url.clone(),
                                     username: channel.settings.username.clone(),
@@ -344,42 +526,81 @@ pub async fn run(stores: Vec<Store>) {
                                     timestamp: channel.settings.timestamp,
                                     store_name: store.name.clone(),
                                     store_url: store.url.clone(),
-                                    store_logo: store.logo.clone()
+                                    store_logo: store.logo.clone(),
+                                    broken_webhooks: broken_webhooks.clone(),
+                                    tx: tx.clone(),
                                 }));
+
+                                quantity += 1;
                             }
 
-                            let length = webhooks.len();
-
-                            let s = if length == 1 {
-                                '\0'
-                            } else {
-                                's'
-                            };
-
-                            default!("Sending {} webhook{}...", length, s);
+                            default!(
+                                "Sending {} webhook{}...",
+                                quantity,
+                                if quantity == 1 { '\0' } else { 's' }
+                            );
                         }
                     } else if res.status() == 429 && !rate_limit {
                         rate_limit = true;
                         warning!("Rate limit reached for {}!", store.name);
                     }
-                } else {
+                } else if online {
                     warning!("Failed to GET {}!", store.url);
+                    tx.send(Update::Site(SiteUpdate::Offline, "".into())).await.expect("Failed to send update.");
+                    online = false;
                 }
 
                 // The program will wait for the interval to complete
                 // its cycle before running the next iteration and
                 // fetching the store's products again.
                 interval.tick().await;
+            };
+
+            error!("All webhook URLs for `{}` are invalid!", store.name);
+            default!("Stopped monitoring {}.", store.url);
+            *amount.write().await -= 1;
+
+            // If no stores are being monitored, the `run()` function
+            // will return and the program will quit.
+            if *amount.read().await == 0 {
+                tx.send(Update::Monitor(MonitorUpdate::Quit, "No valid webhooks!".into())).await.expect("Failed to send update.");
             }
         }));
     }
 
-    default!("Monitoring {} stores...", tasks.len());
+    if quit_rx.await.is_ok() {
+        return;
+    }
 
+    // This function call ensures that the program doesn't exit while
+    // the monitor is still running.
     join_all(tasks).await;
 }
 
-pub fn minimal_products(current_products: Arc<Vec<Product>>) -> Option<Vec<MinimalProduct>> {
+#[derive(Debug)]
+enum Update {
+    Monitor(MonitorUpdate, String),
+    Site(SiteUpdate, String),
+    Webhook(WebhookUpdate, String),
+}
+
+#[derive(Debug)]
+enum MonitorUpdate {
+    Quit,
+}
+
+#[derive(Debug, PartialEq)]
+enum SiteUpdate {
+    Online,
+    Offline,
+}
+
+#[derive(Debug)]
+enum WebhookUpdate {
+    Invalid,
+}
+
+fn minimal_products(current_products: Arc<Vec<Product>>) -> Option<Vec<MinimalProduct>> {
     Some({
         let mut products = vec![];
         for product in (*current_products).iter() {
@@ -407,7 +628,7 @@ pub fn minimal_products(current_products: Arc<Vec<Product>>) -> Option<Vec<Minim
 // number to have changed) are compared. This new struct, holding the
 // minimum amount of data, can be used to reduce memory usage so that
 // products don't have to be saved to a database.
-pub struct MinimalProduct {
+struct MinimalProduct {
     id: u64,
     updated_at: String,
     variants: Vec<MinimalVariant>,
@@ -416,9 +637,9 @@ pub struct MinimalProduct {
 // The fields of this struct used to be public while those of `MinimalProduct`
 // are not because a test required it.
 
-pub struct MinimalVariant {
-    pub id: u64,
-    pub available: bool,
+struct MinimalVariant {
+    id: u64,
+    available: bool,
     // While the program could check when each variant was last updated,
     // ignoring that value and only checking its availability is faster,
     // and removing its field results in lower memory usage.
@@ -433,28 +654,28 @@ pub struct MinimalVariant {
 // webhook's embed, as well as a vector containing the available
 // variants.
 #[derive(PartialEq, Debug)]
-pub struct AvailableProduct {
-    pub name: String,
+struct AvailableProduct {
+    name: String,
 
     // The product's handle can be used to obtain the product link as
     // follows: `format!("{}/products/{}", store_url, handle)`.
-    pub handle: String,
-    pub brand: String,
-    pub price: String,
+    handle: String,
+    brand: String,
+    price: String,
 
     // I changed this to an `Option` as for some reason (which I can't
     // remember) I was using an empty `String` instead of `None` if the
     // product didn't have a photo.
-    pub image: Option<String>,
-    pub variants: Vec<AvailableVariant>,
+    image: Option<String>,
+    variants: Vec<AvailableVariant>,
 }
 
 // There's no need to make unnecessary operations or clone unused data,
 // so this struct holds the bare minimum. Since some values
 #[derive(PartialEq, Debug)]
-pub struct AvailableVariant {
-    pub name: String,
-    pub id: u64,
+struct AvailableVariant {
+    name: String,
+    id: u64,
 }
 
 // Why do two `struct`s for both "Minimal" and "Available" Products and
@@ -466,7 +687,7 @@ pub struct AvailableVariant {
 // different data types, as they include the product details used to
 // form webhook embeds. As a result, both types are needed.
 
-pub fn available_product(
+fn available_product(
     curr: &Product, /*, prev: Option<&Vec<MinimalVariant>>*/
 ) -> Arc<AvailableProduct> {
     let mut variants: Vec<AvailableVariant> = vec![];
@@ -535,54 +756,60 @@ pub fn available_product(
 // only parameters are the webhook's URL and the `Message` to be sent,
 // while the two functions' role is to construct the embeds, as they
 // will differ between item and password-related notifications.
-async fn request(url: String, msg: Arc<Message>) {
-    /* hidden!("`request()` started!"); */
+async fn request(
+    url: String,
+    msg: Arc<Message>,
+    broken: Arc<RwLock<Vec<String>>>,
+    tx: Sender<Update>,
+) {
+    /* hidden!("Webhook Preview: {}", preview(msg.clone())); */
 
     loop {
-        let status = webhook::send(url.clone(), msg.clone()).await;
+        match webhook::send(url.clone(), msg.clone()).await {
+            // Seems like the compiler complains when I use my logging
+            // macros outside of code blocks...
+            /* Status::Success => hidden!("Successfully sent webhook to {}!", url), */
+            Status::Success => {
+                hidden!("Successfully sent webhook to {}!", url);
+            }
+            Status::RateLimit(seconds) => {
+                hidden!("Rate Limit reached for {}!", url);
 
-        /* hidden!("Webhook Status: {:?}!", status); */
+                if let Some(seconds) = seconds {
+                    hidden!("Waiting {} seconds for {}...", seconds, url);
+                    sleep(Duration::from_secs_f64(seconds)).await;
 
-        if status == Status::Success {
-            /* hidden!("Successfully sent webhook to {}!", url); */
-            break;
-        }
+                    // The loop only iterates again if the webhook is
+                    // rate-limited and the program can determine how
+                    // long to wait for. In all other cases, the
+                    // function returns and the task is terminated.
+                    continue;
+                }
+            }
+            Status::Invalid => {
+                if !broken.read().await.contains(&url) {
+                    // Due to the channel's buffer, sending this message
+                    // should take less time than `.write()`ing to
+                    // `broken` directly.
+                    tx.send(Update::Webhook(WebhookUpdate::Invalid, url))
+                        .await
+                        .expect("Failed to send update.");
+                }
+            }
 
-        if let Status::RateLimit(seconds) = status {
-            hidden!("Rate Limit reached for {}!", url);
-
-            if let Some(seconds) = seconds {
-                hidden!("Waiting {} seconds for {}...", seconds, url);
-                sleep(Duration::from_secs_f64(seconds)).await;
-                continue;
+            // I'm not sure what the program should do when an unknown
+            // error occurs. Since in some cases it might be best to
+            // treat it the same way as an invalid webhook (as the issue
+            // should be persistent), I might chang this `match`
+            // statement's logic or introduce a new setting to decide
+            // the monitor's behavior.
+            Status::Unknown => {
+                warning!("Failed to send webhook to {}!", url);
             }
         }
 
-        if status == Status::Invalid {
-            hidden!("Invalid webhook: {}!", url);
-        }
-
-        break;
+        return;
     }
-}
-
-pub struct ItemSettings {
-    kind: Item,
-    product: Arc<AvailableProduct>,
-    url: String,
-    username: Option<String>,
-    avatar: Option<String>,
-    color: Option<u32>,
-    sizes: bool,
-    /* atc: Option<bool>, */
-    thumbnail: bool,
-    image: bool,
-    footer_text: Option<String>,
-    footer_image: Option<String>,
-    timestamp: bool,
-    store_name: String,
-    store_url: String,
-    store_logo: String,
 }
 
 // The function and enum are named `item()` and `Item`, and not
@@ -713,12 +940,16 @@ async fn item(settings: ItemSettings) {
         image: {
             // This isn't very elegant, but I copied it from the
             // `thumbnail` field below where it was the only
-            // solution i found.
+            // solution I found.
 
             let mut img = None;
             if settings.image && settings.product.image.is_some() {
                 img = Some(Image {
-                    url: settings.product.image.clone().unwrap(),
+                    url: settings
+                        .product
+                        .image
+                        .clone()
+                        .expect("Failed to extract Image URL."),
                 });
             }
             img
@@ -727,7 +958,11 @@ async fn item(settings: ItemSettings) {
             let mut tn = None;
             if settings.thumbnail && settings.product.image.is_some() {
                 tn = Some(Thumbnail {
-                    url: settings.product.image.clone().unwrap(),
+                    url: settings
+                        .product
+                        .image
+                        .clone()
+                        .expect("Failed to extract Image URL."),
                 });
             }
             tn
@@ -743,7 +978,28 @@ async fn item(settings: ItemSettings) {
 
     /* hidden!("Calling `request()` for {}!", product.name.clone()); */
 
-    request(settings.url, msg).await;
+    request(settings.url, msg, settings.broken_webhooks, settings.tx).await;
+}
+
+struct ItemSettings {
+    kind: Item,
+    product: Arc<AvailableProduct>,
+    url: String,
+    username: Option<String>,
+    avatar: Option<String>,
+    color: Option<u32>,
+    sizes: bool,
+    /* atc: Option<bool>, */
+    thumbnail: bool,
+    image: bool,
+    footer_text: Option<String>,
+    footer_image: Option<String>,
+    timestamp: bool,
+    store_name: String,
+    store_url: String,
+    store_logo: String,
+    broken_webhooks: Arc<RwLock<Vec<String>>>,
+    tx: Sender<Update>,
 }
 
 #[derive(PartialEq)]
@@ -752,7 +1008,59 @@ enum Item {
     Restock,
 }
 
-pub struct PasswordSettings {
+async fn password(settings: PasswordSettings) {
+    let embed = Embed {
+        title: Some(format!("Password Page {}!", {
+            if settings.kind == Password::Up {
+                "Up"
+            } else {
+                "Down"
+            }
+        })),
+        description: None,
+        url: Some(settings.store_url.clone()),
+        color: settings.color,
+        fields: None,
+        author: Some(Author {
+            name: settings.store_name,
+            url: Some(settings.store_url.clone()),
+            icon_url: Some(settings.store_logo),
+        }),
+        footer: {
+            // The program doesn't check if a footer image was included,
+            // as if a timestamp or footer text weren't, it won't be
+            // rendered regardless.
+            if settings.footer_text.is_some() || settings.timestamp {
+                Some(Footer {
+                    text: settings.footer_text,
+                    icon_url: settings.footer_image,
+                })
+            } else {
+                None
+            }
+        },
+        timestamp: {
+            if settings.timestamp {
+                Some(Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true))
+            } else {
+                None
+            }
+        },
+        image: None,
+        thumbnail: None,
+    };
+
+    let msg = Arc::from(Message {
+        content: None,
+        embeds: Some(vec![embed]),
+        username: settings.username,
+        avatar_url: settings.avatar.clone(),
+    });
+
+    request(settings.url, msg, settings.broken_webhooks, settings.tx).await;
+}
+
+struct PasswordSettings {
     kind: Password,
     url: String,
     username: Option<String>,
@@ -764,77 +1072,31 @@ pub struct PasswordSettings {
     store_name: String,
     store_url: String,
     store_logo: String,
-}
-
-async fn password(settings: PasswordSettings) {
-    // In order for the Webhook URL to be included in the logs if the
-    // task fails, it has to be cloned, or it will be consumed when it's
-    // `move`d into the task.
-    let webhook_url = settings.url.clone();
-
-    let task = task::spawn(async move {
-        let embed = Embed {
-            title: Some(format!("Password Page {}!", {
-                if settings.kind == Password::Up {
-                    "Up"
-                } else {
-                    "Down"
-                }
-            })),
-            description: None,
-            url: Some(settings.store_url.clone()),
-            color: settings.color,
-            fields: None,
-            author: Some(Author {
-                name: settings.store_name,
-                url: Some(settings.store_url.clone()),
-                icon_url: Some(settings.store_logo),
-            }),
-            footer: {
-                // The program doesn't check if a footer image was
-                // included, as if a timestamp or footer text
-                // weren't, it won't be rendered regardless.
-                if settings.footer_text.is_some() || settings.timestamp {
-                    Some(Footer {
-                        text: settings.footer_text,
-                        icon_url: settings.footer_image,
-                    })
-                } else {
-                    None
-                }
-            },
-            timestamp: {
-                if settings.timestamp {
-                    Some(Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true))
-                } else {
-                    None
-                }
-            },
-            image: None,
-            thumbnail: None,
-        };
-
-        let msg = Arc::from(Message {
-            content: None,
-            embeds: Some(vec![embed]),
-            username: settings.username,
-            avatar_url: settings.avatar.clone(),
-        });
-
-        request(settings.url, msg).await;
-    })
-    .await;
-
-    if task.is_err() {
-        hidden!(
-            "The task failed before sending a webhook to {}!",
-            webhook_url
-        );
-    };
+    broken_webhooks: Arc<RwLock<Vec<String>>>,
+    tx: Sender<Update>,
 }
 
 #[derive(PartialEq)]
 enum Password {
     Up,
     Down,
+}
+
+// While this function currently isn't used anywhere, it has been tested
+// and seems to be working. In the future, it could be used to allow
+// users to view a preview of the embeds, which could be convenient when
+// setting up the monitor using the command line in future versions of
+// the program.
+#[allow(dead_code)]
+fn preview(msg: Arc<Message>) -> String {
+    format!(
+        "https://discohook.org/?data={}",
+        encode_config(
+            format!(
+                "{{\"messages\":[{{\"data\":{}}}]}}",
+                serde_json::to_string(&*msg).expect("Failed to serialize JSON.")
+            ),
+            URL_SAFE
+        )
+    )
 }
